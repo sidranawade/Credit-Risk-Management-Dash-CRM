@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CredRisMan Navigation</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --crm-primary: #ba0013;
+      --crm-primary-hover: #c00014;
+      --crm-on-primary: #ffffff;
+      --crm-surface-low: #f3f4f5;
+      --crm-surface-high: #e7e8e9;
+      --crm-surface-lowest: #ffffff;
+      --crm-surface-variant: #e1e3e4;
+      --crm-on-surface: #191c1d;
+      --crm-on-surface-variant: #5d3f3c;
+      --crm-nav-width: 260px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      color: var(--crm-on-surface);
+      background: #f8f9fa;
+      font-family: "Inter", sans-serif;
+    }
+
+    .material-symbols-outlined {
+      font-family: "Material Symbols Outlined";
+      font-weight: normal;
+      font-style: normal;
+      font-size: 24px;
+      line-height: 1;
+      letter-spacing: normal;
+      text-transform: none;
+      display: inline-block;
+      white-space: nowrap;
+      word-wrap: normal;
+      direction: ltr;
+      -webkit-font-feature-settings: "liga";
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .crm-side-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 40;
+      width: var(--crm-nav-width);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 16px;
+      background: var(--crm-surface-low);
+      border-right: 1px solid var(--crm-surface-variant);
+    }
+
+    .crm-side-nav__logo {
+      position: absolute;
+      top: 0;
+      left: 0;
+      padding: 16px;
+      margin-bottom: 32px;
+    }
+
+    .crm-side-nav__logo img {
+      height: 48px;
+      margin-top: 8px;
+      margin-left: 8px;
+      object-fit: contain;
+      cursor: pointer;
+      transition: opacity 0.3s ease;
+    }
+
+    .crm-side-nav__logo img:hover {
+      opacity: 0.8;
+    }
+
+    .crm-side-nav__links {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-top: 96px;
+    }
+
+    .crm-side-nav__footer {
+      margin-top: auto;
+    }
+
+    .crm-side-nav__link {
+      min-height: 36px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 12px;
+      color: var(--crm-on-surface-variant);
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 11px;
+      line-height: 16px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .crm-side-nav__link:hover {
+      color: var(--crm-on-surface);
+      background: var(--crm-surface-high);
+    }
+
+    .crm-side-nav__link.is-active,
+    .crm-side-nav__link--primary {
+      color: var(--crm-on-primary);
+      background: var(--crm-primary);
+    }
+
+    .crm-side-nav__link.is-active:hover,
+    .crm-side-nav__link--primary:hover {
+      color: var(--crm-on-primary);
+      background: var(--crm-primary-hover);
+    }
+
+    .crm-side-nav__link--secondary {
+      margin-top: 8px;
+      color: var(--crm-primary);
+      background: var(--crm-surface-lowest);
+      border: 1px solid var(--crm-surface-variant);
+    }
+
+    .crm-side-nav__link--secondary:hover {
+      color: var(--crm-primary);
+      background: var(--crm-surface-high);
+    }
+
+    .crm-side-nav__link-icon {
+      font-size: 20px;
+      flex: 0 0 auto;
+    }
+
+    .crm-side-nav__link-copy {
+      min-width: 0;
+    }
+
+    .crm-side-nav__link-with-badge {
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .crm-side-nav__link-group {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .crm-side-nav__badge {
+      min-width: 20px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2px 6px;
+      color: var(--crm-on-primary);
+      background: var(--crm-primary);
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 700;
+      line-height: 14px;
+    }
+
+    .crm-page-with-side-nav {
+      margin-left: var(--crm-nav-width);
+      min-height: 100vh;
+      padding: 32px;
+    }
+
+    @media (max-width: 767px) {
+      .crm-side-nav {
+        position: static;
+        width: 100%;
+        height: auto;
+        border-right: 0;
+        border-bottom: 1px solid var(--crm-surface-variant);
+      }
+
+      .crm-side-nav__logo {
+        position: static;
+        padding: 0;
+      }
+
+      .crm-side-nav__links {
+        margin-top: 16px;
+      }
+
+      .crm-page-with-side-nav {
+        margin-left: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="crm-side-nav" aria-label="Primary navigation">
+    <div class="crm-side-nav__logo">
+      <img
+        alt="CRM Pro Logo"
+        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwF7UxEiNYD9OaNYi_BDhZuxvoqvZIPNDrhJNwZp1GXjQxuvbsB1Yyr6cvCsamcMXqLa8xZDWguAKGFoanG8ohGx7fl7QXx6Kr0ElPL_Oo_mvIoHVhm63M7M1lNLHUh3rza5oIfF7W4_THRasdKoB5m-VGkGHLSUA48nIiG2pT40V72Jco79k7TTq_-QQsMTUQOX5PVQdqftpWvDSHlMslLozFDezMxaCxMMdAOlvu1AImqAb8WXPtDUh-7JK1DV_TIm9KEUK9JDY">
+    </div>
+
+    <div class="crm-side-nav__links">
+      <a class="crm-side-nav__link is-active" href="/">
+        <span class="material-symbols-outlined crm-side-nav__link-icon" style="font-variation-settings: 'FILL' 1;">home</span>
+        <span class="crm-side-nav__link-copy">Home</span>
+      </a>
+
+      <a class="crm-side-nav__link" href="/client-directory">
+        <span class="material-symbols-outlined crm-side-nav__link-icon">group</span>
+        <span class="crm-side-nav__link-copy">Clients</span>
+      </a>
+
+      <a class="crm-side-nav__link" href="/client-dashboard">
+        <span class="material-symbols-outlined crm-side-nav__link-icon">dashboard</span>
+        <span class="crm-side-nav__link-copy">Client Dashboard</span>
+      </a>
+
+      <a class="crm-side-nav__link crm-side-nav__link-with-badge" href="#">
+        <span class="crm-side-nav__link-group">
+          <span class="material-symbols-outlined crm-side-nav__link-icon">notifications</span>
+          <span class="crm-side-nav__link-copy">Notifications</span>
+        </span>
+        <span class="crm-side-nav__badge">1</span>
+      </a>
+    </div>
+
+    <div class="crm-side-nav__footer">
+      <a class="crm-side-nav__link crm-side-nav__link--primary" href="#">
+        <span class="material-symbols-outlined crm-side-nav__link-icon">upload_file</span>
+        <span class="crm-side-nav__link-copy">Upload CSV</span>
+      </a>
+
+      <a class="crm-side-nav__link crm-side-nav__link--secondary" href="#">
+        <span class="material-symbols-outlined crm-side-nav__link-icon">account_circle</span>
+        <span class="crm-side-nav__link-copy">Account</span>
+      </a>
+    </div>
+  </nav>
+
+  <main class="crm-page-with-side-nav">
+    <h1>Page content goes here</h1>
+  </main>
+</body>
+</html>

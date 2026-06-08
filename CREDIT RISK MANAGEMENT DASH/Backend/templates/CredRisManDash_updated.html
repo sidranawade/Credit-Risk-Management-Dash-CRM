@@ -1,0 +1,257 @@
+{% extends "base.html" %}
+
+{% block title %}CRM Pro - Credit Risk Dashboard{% endblock %}
+
+{% block extra_head %}
+<style>
+    .marquee-container {
+      overflow: hidden;
+      white-space: nowrap;
+      box-sizing: border-box;
+      width: 100%;
+    }
+    .marquee-content {
+      display: inline-block;
+      padding-left: 100%;
+      animation: marquee 20s linear infinite;
+    }
+    @keyframes marquee {
+      0%   { transform: translate(0, 0); }
+      100% { transform: translate(-100%, 0); }
+    }
+
+    #toast {
+      visibility: hidden;
+      min-width: 250px;
+      background-color: #2e3132;
+      color: #fff;
+      text-align: left;
+      border-radius: 8px;
+      padding: 16px;
+      position: fixed;
+      z-index: 100;
+      right: 30px;
+      bottom: 30px;
+      font-size: 14px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transform: translateX(150%);
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), visibility 0.4s;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    #toast.show {
+      visibility: visible;
+      transform: translateX(0);
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+<!-- BEGIN: TopNavBar -->
+<header class="bg-surface-container-lowest border-b border-surface-variant flex justify-between items-center h-12 w-full sticky top-0 z-30 shadow-sm">
+  <div class="w-full h-full flex items-center bg-surface-container-lowest marquee-container">
+    <div class="marquee-content font-body-sm text-on-surface font-medium">
+      <span class="text-primary font-bold mr-2">LIVE UPDATE:</span> Acme Corp sales amount of $1,250,000 recorded. | 
+      <span class="text-error font-bold mx-2">ALERT:</span> Client B risk score increased. | 
+      <span class="text-tertiary font-bold mx-2">UPDATE:</span> Global Logistics contract renewed.
+    </div>
+  </div>
+</header>
+<!-- END: TopNavBar -->
+
+<!-- BEGIN: Dashboard Canvas -->
+<main class="flex-1 p-margin-page grid grid-cols-1 gap-6 max-w-6xl mx-auto w-full overflow-y-auto">
+  <!-- Page Header -->
+  <div class="col-span-1 mb-2 relative flex flex-col md:flex-row md:items-center md:justify-between">
+    <h2 class="font-display-lg text-display-lg text-on-surface tracking-tight">Dashboard Overview</h2>
+    <div class="mt-4 md:mt-0 md:absolute md:right-0 md:top-0">
+      <button class="inline-flex items-center gap-2 px-4 py-2 bg-primary text-on-primary font-title-sm rounded shadow-sm hover:bg-surface-tint transition-colors duration-200">
+        <span class="material-symbols-outlined text-[20px]">add</span>
+        <span class="font-label-caps text-label-caps">Register Company</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- BEGIN: Top Revenue Block -->
+  <section class="col-span-1 bg-surface-container-lowest border border-surface-variant rounded-lg p-5 shadow-sm mb-6">
+    <div class="flex flex-col md:flex-row gap-4 items-end">
+      <div class="flex-1 space-y-1">
+        <label class="font-label-caps text-label-caps text-secondary uppercase">Company ID</label>
+        <input class="w-full px-3 py-2 bg-surface-container-low border border-surface-variant rounded font-body-sm text-on-surface focus:outline-none focus:border-primary" placeholder="e.g. CRM-001" type="text">
+      </div>
+      <div class="flex-1 space-y-1">
+        <label class="font-label-caps text-label-caps text-secondary uppercase">Company Name</label>
+        <input class="w-full px-3 py-2 bg-surface-container-low border border-surface-variant rounded font-body-sm text-on-surface focus:outline-none focus:border-primary" placeholder="Search name..." type="text">
+      </div>
+      <div class="flex-1 space-y-1">
+        <label class="font-label-caps text-label-caps text-secondary uppercase">Location</label>
+        <input class="w-full px-3 py-2 bg-surface-container-low border border-surface-variant rounded font-body-sm text-on-surface focus:outline-none focus:border-primary" placeholder="City or Region" type="text">
+      </div>
+      <button class="inline-flex items-center gap-2 px-6 py-2 bg-primary text-on-primary font-title-sm rounded shadow-sm hover:bg-surface-tint transition-colors duration-200 h-[38px]">
+        <span class="material-symbols-outlined text-[20px]">search</span>
+        <span class="font-label-caps text-label-caps">Search</span>
+      </button>
+    </div>
+  </section>
+
+  <section class="col-span-1 bg-surface-container-lowest border border-surface-variant rounded-lg flex flex-col shadow-sm">
+    <header class="flex justify-between items-center p-5 border-b border-surface-variant">
+      <h3 class="font-title-sm text-title-sm text-on-surface">Top Grossing Clients</h3>
+      <button aria-label="More options" class="text-secondary hover:text-primary transition-colors">
+        <span class="material-symbols-outlined text-[20px]" data-icon="more_horiz">more_horiz</span>
+      </button>
+    </header>
+    <div class="overflow-x-auto">
+      <table class="w-full text-left border-collapse">
+        <thead>
+          <tr class="bg-surface-container-lowest border-b border-surface-variant">
+            <th class="py-3 px-5 font-label-caps text-label-caps text-secondary uppercase tracking-wider">Company ID</th>
+            <th class="py-3 px-5 font-label-caps text-label-caps text-secondary uppercase tracking-wider">Client</th>
+            <th class="py-3 px-5 font-label-caps text-label-caps text-secondary uppercase tracking-wider">Industry</th>
+            <th class="py-3 px-5 font-label-caps text-label-caps text-secondary uppercase tracking-wider">Location</th>
+            <th class="py-3 px-5 font-label-caps text-label-caps text-secondary uppercase tracking-wider text-right">SALES AMOUNT (YTD)</th>
+            <th class="py-3 px-5 font-label-caps text-label-caps text-secondary uppercase tracking-wider text-right">Risk Score</th>
+          </tr>
+        </thead>
+        <tbody class="font-body-sm text-body-sm text-on-surface">
+          <tr class="border-b border-surface-container-highest hover:bg-surface-container-low transition-colors">
+            <td class="py-3 px-5 font-data-tabular text-data-tabular text-on-surface">CRM-001</td>
+            <td class="py-3 px-5 font-medium text-on-surface"><a class="text-primary font-bold hover:underline transition-colors" href="/client-dashboard">Acme Corp</a></td>
+            <td class="py-3 px-5 text-secondary">Manufacturing</td>
+            <td class="py-3 px-5 text-secondary">San Francisco, USA</td>
+            <td class="py-3 px-5 font-data-tabular text-data-tabular text-right text-on-surface">$1,250,000</td>
+            <td class="py-3 px-5 text-right">
+              <span class="inline-flex items-center justify-center px-3 py-1 rounded-full bg-[#e8f5e9] text-[#2e7d32] font-label-caps text-label-caps border border-[#c8e6c9] shadow-sm">Low</span>
+            </td>
+          </tr>
+          <tr class="border-b border-surface-container-highest hover:bg-surface-container-low transition-colors">
+            <td class="py-3 px-5 font-data-tabular text-data-tabular text-on-surface">CRM-002</td>
+            <td class="py-3 px-5 font-medium text-on-surface"><a class="text-primary font-bold hover:underline transition-colors" href="/client-dashboard">Global Logistics</a></td>
+            <td class="py-3 px-5 text-secondary">Transport</td>
+            <td class="py-3 px-5 text-secondary">Singapore</td>
+            <td class="py-3 px-5 font-data-tabular text-data-tabular text-right text-on-surface">$980,500</td>
+            <td class="py-3 px-5 text-right">
+              <span class="inline-flex items-center justify-center px-3 py-1 rounded-full bg-[#fff8e1] text-[#f57f17] font-label-caps text-label-caps border border-[#ffecb3] shadow-sm">Med</span>
+            </td>
+          </tr>
+          <tr class="border-b border-surface-container-highest hover:bg-surface-container-low transition-colors">
+            <td class="py-3 px-5 font-data-tabular text-data-tabular text-on-surface">CRM-003</td>
+            <td class="py-3 px-5 font-medium text-on-surface"><a class="text-primary font-bold hover:underline transition-colors" href="/client-dashboard">Nexus Tech</a></td>
+            <td class="py-3 px-5 text-secondary">Software</td>
+            <td class="py-3 px-5 text-secondary">Berlin, Germany</td>
+            <td class="py-3 px-5 font-data-tabular text-data-tabular text-right text-on-surface">$750,000</td>
+            <td class="py-3 px-5 text-right">
+              <span class="inline-flex items-center justify-center px-3 py-1 rounded-full bg-[#e8f5e9] text-[#2e7d32] font-label-caps text-label-caps border border-[#c8e6c9] shadow-sm">Low (18)</span>
+            </td>
+          </tr>
+          <tr class="hover:bg-surface-container-low transition-colors">
+            <td class="py-3 px-5 font-data-tabular text-data-tabular text-on-surface">CRM-004</td>
+            <td class="py-3 px-5 font-medium text-on-surface"><a class="text-primary font-bold hover:underline transition-colors" href="/client-dashboard">Initech</a></td>
+            <td class="py-3 px-5 text-secondary">Tech</td>
+            <td class="py-3 px-5 text-secondary">Austin, USA</td>
+            <td class="py-3 px-5 font-data-tabular text-data-tabular text-right text-on-surface">$620,000</td>
+            <td class="py-3 px-5 text-right">
+              <span class="inline-flex items-center justify-center px-3 py-1 rounded-full bg-[#e8f5e9] text-[#2e7d32] font-label-caps text-label-caps border border-[#c8e6c9] shadow-sm">Low</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- BEGIN: Declining Revenue Center -->
+  <section class="col-span-1 bg-surface-container-lowest border border-surface-variant rounded-lg flex flex-col shadow-sm">
+    <header class="flex justify-between items-center p-5 border-b border-surface-variant">
+      <h3 class="font-title-sm text-title-sm text-on-surface flex items-center gap-2">
+        <span class="material-symbols-outlined text-primary text-[20px]" data-icon="trending_down">trending_down</span>
+        Risk Watchlist
+      </h3>
+    </header>
+    <div class="p-5 space-y-3">
+      <!-- Risk Items -->
+      <article class="p-4 border border-outline-variant rounded bg-error-container/10 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-error-container/20 transition-colors">
+        <div>
+          <div class="flex items-center gap-3 mb-1">
+            <h4 class="font-body-md text-body-md font-bold text-on-surface"><a class="text-primary font-bold hover:underline transition-colors" href="/client-dashboard">Client B (Retail)</a> <span class="text-secondary font-normal">[CRM-005]</span></h4>
+            <span class="inline-flex items-center justify-center px-3 py-1 rounded-full bg-error text-on-error font-label-caps text-label-caps shadow-sm">High Risk</span>
+          </div>
+          <p class="font-label-caps text-label-caps text-secondary">Chicago, USA • Monthly Sales Trend</p>
+        </div>
+        <div class="flex items-center gap-3 bg-surface-container-lowest px-3 py-1.5 rounded border border-surface-variant">
+          <span class="font-data-tabular text-data-tabular text-secondary line-through">$10k</span>
+          <span class="material-symbols-outlined text-primary text-[16px]" data-icon="arrow_forward">arrow_forward</span>
+          <span class="font-data-tabular text-data-tabular font-bold text-primary">$3k</span>
+        </div>
+      </article>
+      <!-- ... more risk items ... -->
+      <article class="p-4 border border-surface-variant rounded bg-surface-container-lowest flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-surface-container-low transition-colors">
+        <div>
+          <div class="flex items-center gap-3 mb-1">
+            <h4 class="font-body-md text-body-md font-medium text-on-surface"><a class="text-primary font-bold hover:underline transition-colors" href="/client-dashboard">Omega Build</a> <span class="text-secondary font-normal">[CRM-006]</span></h4>
+            <span class="inline-flex items-center justify-center px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label-caps text-label-caps border border-secondary-fixed-dim shadow-sm">Monitor</span>
+          </div>
+          <p class="font-label-caps text-label-caps text-secondary">London, UK • Monthly Sales Trend</p>
+        </div>
+        <div class="flex items-center gap-3 bg-surface-container-lowest px-3 py-1.5 rounded border border-surface-variant">
+          <span class="font-data-tabular text-data-tabular text-secondary">$25k</span>
+          <span class="material-symbols-outlined text-secondary text-[16px]" data-icon="arrow_forward">arrow_forward</span>
+          <span class="font-data-tabular text-data-tabular text-on-surface">$20k</span>
+        </div>
+      </article>
+      <article class="p-4 border border-surface-variant rounded bg-surface-container-lowest flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-surface-container-low transition-colors">
+        <div>
+          <div class="flex items-center gap-3 mb-1">
+            <h4 class="font-body-md text-body-md font-medium text-on-surface"><a class="text-primary font-bold hover:underline transition-colors" href="/client-dashboard">Stark Ind.</a> <span class="text-secondary font-normal">[CRM-007]</span></h4>
+            <span class="inline-flex items-center justify-center px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label-caps text-label-caps border border-secondary-fixed-dim shadow-sm">Monitor</span>
+          </div>
+          <p class="font-label-caps text-label-caps text-secondary">New York, USA • Monthly Sales Trend</p>
+        </div>
+        <div class="flex items-center gap-3 bg-surface-container-lowest px-3 py-1.5 rounded border border-surface-variant">
+          <span class="font-data-tabular text-data-tabular text-secondary">$50k</span>
+          <span class="material-symbols-outlined text-secondary text-[16px]" data-icon="arrow_forward">arrow_forward</span>
+          <span class="font-data-tabular text-data-tabular text-on-surface">$48k</span>
+        </div>
+      </article>
+      <article class="p-4 border border-outline-variant rounded bg-error-container/10 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-error-container/20 transition-colors">
+        <div>
+          <div class="flex items-center gap-3 mb-1">
+            <h4 class="font-body-md text-body-md font-bold text-on-surface"><a class="text-primary font-bold hover:underline transition-colors" href="/client-dashboard">Wayne Ent.</a> <span class="text-secondary font-normal">[CRM-008]</span></h4>
+            <span class="inline-flex items-center justify-center px-3 py-1 rounded-full bg-error text-on-error font-label-caps text-label-caps shadow-sm">High Risk</span>
+          </div>
+          <p class="font-label-caps text-label-caps text-secondary">Gotham City • Monthly Sales Trend</p>
+        </div>
+        <div class="flex items-center gap-3 bg-surface-container-lowest px-3 py-1.5 rounded border border-surface-variant">
+          <span class="font-data-tabular text-data-tabular text-secondary line-through">$80k</span>
+          <span class="material-symbols-outlined text-primary text-[16px]" data-icon="arrow_forward">arrow_forward</span>
+          <span class="font-data-tabular text-data-tabular font-bold text-primary">$40k</span>
+        </div>
+      </article>
+    </div>
+  </section>
+</main>
+
+<!-- BEGIN: Toast Notification -->
+<div class="" data-purpose="toast-notification" id="toast">
+  <span class="material-symbols-outlined text-primary" data-icon="error">error</span>
+  <div>
+    <p class="font-bold text-body-sm">New Alert</p>
+    <p class="text-[11px] text-surface-variant">Client B risk score increased.</p>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    function showToast() {
+      var toastElement = document.getElementById("toast");
+      if (toastElement) {
+        toastElement.classList.add("show");
+        setTimeout(function(){ toastElement.classList.remove("show"); }, 4000);
+      }
+    }
+    // Simulate new alert after 3 seconds
+    setTimeout(showToast, 3000);
+  </script>
+{% endblock %}

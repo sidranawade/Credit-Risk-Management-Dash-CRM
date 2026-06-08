@@ -1,0 +1,283 @@
+{% extends "base.html" %}
+
+{% block title %}Client Directory - CRM Pro{% endblock %}
+
+{% block extra_head %}
+<style>
+  /* Zebra rows */
+  .zebra-row:nth-child(even) { background-color: #fafbfc; }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: #f1f5f9; }
+  ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Header -->
+<header class="flex justify-between items-center h-16 px-margin-desktop bg-white border-b border-outline-variant z-40 shrink-0">
+  <div class="flex items-center gap-xl flex-1">
+    <h1 class="font-headline-sm text-headline-sm font-bold text-on-surface">Client</h1>
+    <!-- Search Bar -->
+    <div class="relative w-96 hidden md:block group">
+      <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-secondary group-focus-within:text-primary transition-colors">search</span>
+      <input id="searchInput" class="w-full pl-10 pr-4 py-2 border border-surface-variant rounded bg-surface-container-lowest text-on-surface font-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-secondary-fixed-dim" placeholder="Search by ID, Name, or Location" type="text">
+    </div>
+  </div>
+  <div class="flex items-center gap-sm">
+    <!-- Register Company Button -->
+    <button class="flex items-center gap-xs px-3.5 py-1.5 bg-primary text-on-primary hover:bg-surface-tint rounded hover:shadow-sm active:scale-[0.98] transition-all text-label-md font-semibold cursor-pointer" id="registerCompanyBtn">
+      <span class="material-symbols-outlined text-[18px]">add_business</span>
+      Register Company
+    </button>
+    <!-- Sort Sales -->
+    <div class="relative inline-block text-left">
+      <button class="flex items-center gap-xs px-3 py-1.5 border border-surface-variant rounded bg-surface-container-lowest hover:bg-surface-container-low transition-colors text-on-surface font-label-md text-label-md" id="sortSalesBtn">
+        <span class="material-symbols-outlined text-[18px]">sort</span>
+        Sort Sales
+        <span class="material-symbols-outlined text-[18px]">arrow_drop_down</span>
+      </button>
+      <div class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-[0px_4px_12px_rgba(0,0,0,0.05)] bg-surface-container-lowest ring-1 ring-black ring-opacity-5 z-50" id="sortSalesDropdown" style="display: none;">
+        <div aria-labelledby="options-menu" aria-orientation="vertical" class="py-1" role="menu">
+          <a id="sortSalesHighest" class="block px-4 py-2 text-body-md text-on-surface hover:bg-surface-container-low hover:text-primary transition-colors" href="#" role="menuitem">Highest Sales</a>
+          <a id="sortSalesLowest" class="block px-4 py-2 text-body-md text-on-surface hover:bg-surface-container-low hover:text-primary transition-colors" href="#" role="menuitem">Lowest Sales</a>
+        </div>
+      </div>
+    </div>
+    <!-- Sort Risk -->
+    <div class="relative inline-block text-left">
+      <button class="flex items-center gap-xs px-3 py-1.5 border border-surface-variant rounded bg-surface-container-lowest hover:bg-surface-container-low transition-colors text-on-surface font-label-md text-label-md" id="sortRiskBtn">
+        <span class="material-symbols-outlined text-[18px]">filter_list</span>
+        Sort Risk
+        <span class="material-symbols-outlined text-[18px]">arrow_drop_down</span>
+      </button>
+      <div class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-[0px_4px_12px_rgba(0,0,0,0.05)] bg-surface-container-lowest ring-1 ring-black ring-opacity-5 z-50" id="sortRiskDropdown" style="display: none;">
+        <div aria-labelledby="options-menu" aria-orientation="vertical" class="py-1" role="menu">
+          <a id="sortRiskHighest" class="block px-4 py-2 text-body-md text-on-surface hover:bg-surface-container-low hover:text-primary transition-colors" href="#" role="menuitem">Highest Risk</a>
+          <a id="sortRiskLowest" class="block px-4 py-2 text-body-md text-on-surface hover:bg-surface-container-low hover:text-primary transition-colors" href="#" role="menuitem">Lowest Risk</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto p-margin-desktop bg-background">
+  <div class="max-w-[1440px] mx-auto bg-surface-container-lowest border border-surface-variant rounded shadow-sm overflow-hidden">
+    <table class="w-full text-left border-collapse">
+      <thead class="bg-[#F1F5F9] border-b border-surface-variant">
+        <tr>
+          <th class="px-lg py-sm font-label-md text-label-md text-secondary uppercase tracking-wider">Company ID</th>
+          <th class="px-lg py-sm font-label-md text-label-md text-secondary uppercase tracking-wider">Client Name</th>
+          <th class="px-lg py-sm font-label-md text-label-md text-secondary uppercase tracking-wider">Industry</th>
+          <th class="px-lg py-sm font-label-md text-label-md text-secondary uppercase tracking-wider">Location</th>
+          <th class="px-lg py-sm font-label-md text-label-md text-secondary uppercase tracking-wider text-right">Sales Amount</th>
+          <th class="px-lg py-sm font-label-md text-label-md text-secondary uppercase tracking-wider text-center">Risk Score</th>
+          <th class="px-lg py-sm font-label-md text-label-md text-secondary uppercase tracking-wider text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody" class="font-body-md text-on-surface">
+        <!-- Row 1 -->
+        <tr class="zebra-row border-b border-surface-variant hover:bg-primary/5 transition-colors group cursor-pointer">
+          <td class="px-lg py-md text-secondary-fixed-dim font-medium">CRM-001</td>
+          <td class="px-lg py-md"><a class="text-primary font-semibold hover:underline decoration-2 underline-offset-4" href="/client-dashboard">Acme Corp</a></td>
+          <td class="px-lg py-md text-on-surface-variant">Manufacturing</td>
+          <td class="px-lg py-md text-on-surface-variant">Chicago, USA</td>
+          <td class="px-lg py-md text-right font-medium text-on-background">$1,250,000</td>
+          <td class="px-lg py-md text-center"><span class="inline-flex items-center px-2 py-1 rounded-full text-label-sm font-label-sm bg-[#DCFCE7] text-[#166534]">Low</span></td>
+          <td class="px-lg py-md text-center"><button class="p-1.5 border border-surface-variant rounded hover:bg-surface-container-low transition-colors hover:text-primary"><span class="material-symbols-outlined text-[18px] block text-primary">upload_file</span></button></td>
+        </tr>
+        <!-- Row 2 -->
+        <tr class="zebra-row border-b border-surface-variant hover:bg-primary/5 transition-colors group cursor-pointer">
+          <td class="px-lg py-md text-secondary-fixed-dim font-medium">CRM-002</td>
+          <td class="px-lg py-md"><a class="text-primary font-semibold hover:underline decoration-2 underline-offset-4" href="/client-dashboard">Global Logistics</a></td>
+          <td class="px-lg py-md text-on-surface-variant">Transportation</td>
+          <td class="px-lg py-md text-on-surface-variant">London, UK</td>
+          <td class="px-lg py-md text-right font-medium text-on-background">$850,000</td>
+          <td class="px-lg py-md text-center"><span class="inline-flex items-center px-2 py-1 rounded-full text-label-sm font-label-sm bg-[#FEF3C7] text-[#92400E]">Med</span></td>
+          <td class="px-lg py-md text-center"><button class="p-1.5 border border-surface-variant rounded hover:bg-surface-container-low transition-colors hover:text-primary"><span class="material-symbols-outlined text-[18px] block text-primary">upload_file</span></button></td>
+        </tr>
+        <!-- ... more rows ... -->
+        <tr class="zebra-row border-b border-surface-variant hover:bg-primary/5 transition-colors group cursor-pointer">
+            <td class="px-lg py-md text-secondary-fixed-dim font-medium">CRM-003</td>
+            <td class="px-lg py-md"><a class="text-primary font-semibold hover:underline decoration-2 underline-offset-4" href="/client-dashboard">Tech Solutions</a></td>
+            <td class="px-lg py-md text-on-surface-variant">Software</td>
+            <td class="px-lg py-md text-on-surface-variant">San Francisco, USA</td>
+            <td class="px-lg py-md text-right font-medium text-on-background">$3,400,000</td>
+            <td class="px-lg py-md text-center"><span class="inline-flex items-center px-2 py-1 rounded-full text-label-sm font-label-sm bg-[#DCFCE7] text-[#166534]">Low</span></td>
+            <td class="px-lg py-md text-center"><button class="p-1.5 border border-surface-variant rounded hover:bg-surface-container-low transition-colors hover:text-primary"><span class="material-symbols-outlined text-[18px] block text-primary">upload_file</span></button></td>
+          </tr>
+          <tr class="zebra-row border-b border-surface-variant hover:bg-primary/5 transition-colors group cursor-pointer">
+            <td class="px-lg py-md text-secondary-fixed-dim font-medium">CRM-004</td>
+            <td class="px-lg py-md"><a class="text-primary font-semibold hover:underline decoration-2 underline-offset-4" href="/client-dashboard">Starlight Retail</a></td>
+            <td class="px-lg py-md text-on-surface-variant">Retail</td>
+            <td class="px-lg py-md text-on-surface-variant">Toronto, Canada</td>
+            <td class="px-lg py-md text-right font-medium text-on-background">$420,000</td>
+            <td class="px-lg py-md text-center"><span class="inline-flex items-center px-2 py-1 rounded-full text-label-sm font-label-sm bg-[#FEE2E2] text-[#991B1B]">High</span></td>
+            <td class="px-lg py-md text-center"><button class="p-1.5 border border-surface-variant rounded hover:bg-surface-container-low transition-colors hover:text-primary"><span class="material-symbols-outlined text-[18px] block text-primary">upload_file</span></button></td>
+          </tr>
+          <tr class="zebra-row border-b border-surface-variant hover:bg-primary/5 transition-colors group cursor-pointer">
+            <td class="px-lg py-md text-secondary-fixed-dim font-medium">CRM-005</td>
+            <td class="px-lg py-md"><a class="text-primary font-semibold hover:underline decoration-2 underline-offset-4" href="/client-dashboard">Pinnacle Health</a></td>
+            <td class="px-lg py-md text-on-surface-variant">Healthcare</td>
+            <td class="px-lg py-md text-on-surface-variant">Boston, USA</td>
+            <td class="px-lg py-md text-right font-medium text-on-background">$1,800,000</td>
+            <td class="px-lg py-md text-center"><span class="inline-flex items-center px-2 py-1 rounded-full text-label-sm font-label-sm bg-[#DCFCE7] text-[#166534]">Low</span></td>
+            <td class="px-lg py-md text-center"><button class="p-1.5 border border-surface-variant rounded hover:bg-surface-container-low transition-colors hover:text-primary"><span class="material-symbols-outlined text-[18px] block text-primary">upload_file</span></button></td>
+          </tr>
+          <tr class="zebra-row border-b border-surface-variant hover:bg-primary/5 transition-colors group cursor-pointer">
+            <td class="px-lg py-md text-secondary-fixed-dim font-medium">CRM-006</td>
+            <td class="px-lg py-md"><a class="text-primary font-semibold hover:underline decoration-2 underline-offset-4" href="/client-dashboard">Apex Financial</a></td>
+            <td class="px-lg py-md text-on-surface-variant">Finance</td>
+            <td class="px-lg py-md text-on-surface-variant">New York, USA</td>
+            <td class="px-lg py-md text-right font-medium text-on-background">$5,100,000</td>
+            <td class="px-lg py-md text-center"><span class="inline-flex items-center px-2 py-1 rounded-full text-label-sm font-label-sm bg-[#FEF3C7] text-[#92400E]">Med</span></td>
+            <td class="px-lg py-md text-center"><button class="p-1.5 border border-surface-variant rounded hover:bg-surface-container-low transition-colors hover:text-primary"><span class="material-symbols-outlined text-[18px] block text-primary">upload_file</span></button></td>
+          </tr>
+          <tr class="zebra-row border-b border-surface-variant hover:bg-primary/5 transition-colors group cursor-pointer">
+            <td class="px-lg py-md text-secondary-fixed-dim font-medium">CRM-007</td>
+            <td class="px-lg py-md"><a class="text-primary font-semibold hover:underline decoration-2 underline-offset-4" href="/client-dashboard">Nexus Energy</a></td>
+            <td class="px-lg py-md text-on-surface-variant">Energy</td>
+            <td class="px-lg py-md text-on-surface-variant">Houston, USA</td>
+            <td class="px-lg py-md text-right font-medium text-on-background">$2,250,000</td>
+            <td class="px-lg py-md text-center"><span class="inline-flex items-center px-2 py-1 rounded-full text-label-sm font-label-sm bg-[#DCFCE7] text-[#166534]">Low</span></td>
+            <td class="px-lg py-md text-center"><button class="p-1.5 border border-surface-variant rounded hover:bg-surface-container-low transition-colors hover:text-primary"><span class="material-symbols-outlined text-[18px] block text-primary">upload_file</span></button></td>
+          </tr>
+          <tr class="zebra-row border-b border-surface-variant hover:bg-primary/5 transition-colors group cursor-pointer">
+            <td class="px-lg py-md text-secondary-fixed-dim font-medium">CRM-008</td>
+            <td class="px-lg py-md"><a class="text-primary font-semibold hover:underline decoration-2 underline-offset-4" href="/client-dashboard">Horizon Media</a></td>
+            <td class="px-lg py-md text-on-surface-variant">Entertainment</td>
+            <td class="px-lg py-md text-on-surface-variant">Los Angeles, USA</td>
+            <td class="px-lg py-md text-right font-medium text-on-background">$670,000</td>
+            <td class="px-lg py-md text-center"><span class="inline-flex items-center px-2 py-1 rounded-full text-label-sm font-label-sm bg-[#FEE2E2] text-[#991B1B]">High</span></td>
+            <td class="px-lg py-md text-center"><button class="p-1.5 border border-surface-variant rounded hover:bg-surface-container-low transition-colors hover:text-primary"><span class="material-symbols-outlined text-[18px] block text-primary">upload_file</span></button></td>
+          </tr>
+      </tbody>
+    </table>
+
+    <!-- Pagination -->
+    <div class="bg-surface px-lg py-sm border-t border-surface-variant flex items-center justify-between">
+      <span id="entriesCount" class="text-label-sm text-secondary-fixed-dim">Showing 1 to 8 of 42 entries</span>
+      <div class="flex gap-sm">
+        <button class="px-3 py-1 border border-surface-variant rounded text-on-surface-variant hover:bg-surface-container-low transition-colors font-label-md text-label-md disabled:opacity-50" disabled="">Prev</button>
+        <button class="px-3 py-1 border border-surface-variant rounded bg-primary text-on-primary font-label-md text-label-md">1</button>
+        <button class="px-3 py-1 border border-surface-variant rounded text-on-surface-variant hover:bg-surface-container-low transition-colors font-label-md text-label-md">2</button>
+        <button class="px-3 py-1 border border-surface-variant rounded text-on-surface-variant hover:bg-surface-container-low transition-colors font-label-md text-label-md">3</button>
+        <button class="px-3 py-1 border border-surface-variant rounded text-on-surface-variant hover:bg-surface-container-low transition-colors font-label-md text-label-md">Next</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Register Company Modal placeholder or popup removed as requested -->
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  // Elements
+  const tableBody = document.getElementById('tableBody');
+  const searchInput = document.getElementById('searchInput');
+  const entriesCount = document.getElementById('entriesCount');
+
+  // Track total entries count
+  let totalEntriesVal = 42;
+
+  // Dropdown toggling
+  function toggleDropdown(btnId, dropdownId) {
+    const btn = document.getElementById(btnId);
+    const dd  = document.getElementById(dropdownId);
+    if (!btn || !dd) return;
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      const isOpen = dd.style.display === 'block';
+      document.querySelectorAll('div[id$="Dropdown"]').forEach(d => d.style.display = 'none');
+      dd.style.display = isOpen ? 'none' : 'block';
+    });
+  }
+
+  toggleDropdown('sortSalesBtn', 'sortSalesDropdown');
+  toggleDropdown('sortRiskBtn',  'sortRiskDropdown');
+
+  document.addEventListener('click', () => {
+    document.querySelectorAll('div[id$="Dropdown"]').forEach(d => d.style.display = 'none');
+  });
+
+  // Helper to update showing entries count
+  function updateEntriesCount() {
+    if (!entriesCount) return;
+    const currentRows = tableBody.querySelectorAll('tr').length;
+    entriesCount.textContent = `Showing 1 to ${currentRows} of ${totalEntriesVal} entries`;
+  }
+
+  // Interactive Live Search
+  if (searchInput) {
+    searchInput.addEventListener('input', function (e) {
+      const query = e.target.value.toLowerCase().trim();
+      const rows = tableBody.querySelectorAll('tr');
+      rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(query) ? '' : 'none';
+      });
+    });
+  }
+
+  // Interactive Sorting functions
+  function parseSales(row) {
+    const text = row.querySelector('td:nth-child(5)').textContent;
+    return parseFloat(text.replace(/[^0-9.-]+/g, "")) || 0;
+  }
+
+  function parseRisk(row) {
+    const text = row.querySelector('td:nth-child(6) span').textContent.trim();
+    const riskLevels = { 'Low': 1, 'Med': 2, 'High': 3 };
+    return riskLevels[text] || 0;
+  }
+
+  function sortRows(compareFn) {
+    const rows = Array.from(tableBody.querySelectorAll('tr'));
+    rows.sort(compareFn);
+    // Remove all rows
+    tableBody.innerHTML = '';
+    // Re-append sorted rows
+    rows.forEach(row => tableBody.appendChild(row));
+  }
+
+  const sortSalesHighest = document.getElementById('sortSalesHighest');
+  const sortSalesLowest = document.getElementById('sortSalesLowest');
+  const sortRiskHighest = document.getElementById('sortRiskHighest');
+  const sortRiskLowest = document.getElementById('sortRiskLowest');
+
+  if (sortSalesHighest) {
+    sortSalesHighest.addEventListener('click', (e) => {
+      e.preventDefault();
+      sortRows((a, b) => parseSales(b) - parseSales(a));
+    });
+  }
+
+  if (sortSalesLowest) {
+    sortSalesLowest.addEventListener('click', (e) => {
+      e.preventDefault();
+      sortRows((a, b) => parseSales(a) - parseSales(b));
+    });
+  }
+
+  if (sortRiskHighest) {
+    sortRiskHighest.addEventListener('click', (e) => {
+      e.preventDefault();
+      sortRows((a, b) => parseRisk(b) - parseRisk(a));
+    });
+  }
+
+  if (sortRiskLowest) {
+    sortRiskLowest.addEventListener('click', (e) => {
+      e.preventDefault();
+      sortRows((a, b) => parseRisk(a) - parseRisk(b));
+    });
+  }
+
+  // Initialize display counts
+  updateEntriesCount();
+</script>
+{% endblock %}

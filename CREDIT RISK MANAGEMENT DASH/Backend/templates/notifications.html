@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block title %}Notifications - CRM Pro{% endblock %}
+
+{% block content %}
+<!-- Header -->
+<header class="h-16 bg-white border-b border-outline-variant flex justify-between items-center px-lg sticky top-0 z-40">
+  <div class="font-headline-md text-headline-md font-bold text-black">Notifications</div>
+</header>
+
+<main class="flex-1 overflow-y-auto p-margin-desktop bg-background">
+  <div class="max-w-4xl mx-auto">
+    <div class="mb-xl flex justify-between items-center">
+      <div>
+        <h1 class="font-headline-lg text-headline-lg text-on-surface">System Notifications</h1>
+        <p class="text-secondary mt-1">Stay updated with the latest alerts and changes in your portfolio.</p>
+      </div>
+      <button class="px-4 py-2 text-primary font-label-md hover:bg-primary/5 rounded transition-colors">Mark all as read</button>
+    </div>
+
+    <div class="space-y-4">
+      <!-- High Priority Alert -->
+      <div class="bg-error-container/10 border border-error/20 rounded-xl p-lg flex gap-4 hover:bg-error-container/20 transition-colors group cursor-pointer">
+        <div class="w-12 h-12 rounded-full bg-error/10 flex items-center justify-center shrink-0">
+          <span class="material-symbols-outlined text-error" style="font-variation-settings: 'FILL' 1;">warning</span>
+        </div>
+        <div class="flex-1">
+          <div class="flex justify-between items-start mb-1">
+            <h3 class="font-title-sm text-on-surface group-hover:text-error transition-colors">Risk Score Alert</h3>
+            <span class="text-xs text-secondary font-label-md">3 mins ago</span>
+          </div>
+          <p class="text-on-surface-variant font-body-md mb-2">ALERT: Client B risk score increased significantly. Immediate review of credit terms is recommended.</p>
+          <div class="flex gap-3">
+            <a href="/client-dashboard" class="text-xs font-bold text-primary hover:underline">View Profile</a>
+            <button class="text-xs font-bold text-secondary hover:text-on-surface">Dismiss</button>
+          </div>
+        </div>
+        <div class="w-2 h-2 rounded-full bg-error mt-2"></div>
+      </div>
+
+      <!-- Sales Update -->
+      <div class="bg-white border border-surface-variant rounded-xl p-lg flex gap-4 hover:bg-surface-container-low transition-colors group cursor-pointer shadow-sm">
+        <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+          <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">payments</span>
+        </div>
+        <div class="flex-1">
+          <div class="flex justify-between items-start mb-1">
+            <h3 class="font-title-sm text-on-surface">Sales Milestone</h3>
+            <span class="text-xs text-secondary font-label-md">1 hour ago</span>
+          </div>
+          <p class="text-on-surface-variant font-body-md mb-2">Acme Corp sales amount of $1,250,000 recorded. New record for Q2 fiscal year.</p>
+          <div class="flex gap-3">
+            <a href="/client-dashboard" class="text-xs font-bold text-primary hover:underline">Go to Dashboard</a>
+            <button class="text-xs font-bold text-secondary hover:text-on-surface">Dismiss</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contract Update -->
+      <div class="bg-white border border-surface-variant rounded-xl p-lg flex gap-4 hover:bg-surface-container-low transition-colors group cursor-pointer shadow-sm">
+        <div class="w-12 h-12 rounded-full bg-tertiary/10 flex items-center justify-center shrink-0">
+          <span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">description</span>
+        </div>
+        <div class="flex-1">
+          <div class="flex justify-between items-start mb-1">
+            <h3 class="font-title-sm text-on-surface">Contract Renewal</h3>
+            <span class="text-xs text-secondary font-label-md">2 hours ago</span>
+          </div>
+          <p class="text-on-surface-variant font-body-md mb-2">UPDATE: Global Logistics contract renewed for an additional 24 months with improved terms.</p>
+          <div class="flex gap-3">
+            <a href="/client-directory" class="text-xs font-bold text-primary hover:underline">Check Client List</a>
+            <button class="text-xs font-bold text-secondary hover:text-on-surface">Dismiss</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Generic Notification -->
+      <div class="bg-white border border-surface-variant rounded-xl p-lg flex gap-4 hover:bg-surface-container-low transition-colors group cursor-pointer shadow-sm opacity-60">
+        <div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center shrink-0">
+          <span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">info</span>
+        </div>
+        <div class="flex-1">
+          <div class="flex justify-between items-start mb-1">
+            <h3 class="font-title-sm text-on-surface">System Update</h3>
+            <span class="text-xs text-secondary font-label-md">Yesterday</span>
+          </div>
+          <p class="text-on-surface-variant font-body-md mb-2">Quarterly risk assessment reports are now available for download in the Account section.</p>
+          <div class="flex gap-3">
+            <button class="text-xs font-bold text-secondary hover:text-on-surface">View Details</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}
