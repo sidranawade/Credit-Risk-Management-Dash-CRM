@@ -8,7 +8,7 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
 
   <!-- Tailwind CSS -->
@@ -93,16 +93,16 @@
           "fontFamily": {
             "body-sm": ["Inter"],
             "body-md": ["Inter"],
-            "body-lg": ["Hanken Grotesk"],
+            "body-lg": ["Inter"],
             "data-tabular": ["JetBrains Mono"],
-            "title-sm": ["Hanken Grotesk"],
+            "title-sm": ["Inter"],
             "label-caps": ["Inter"],
-            "label-md": ["Hanken Grotesk"],
-            "label-sm": ["Hanken Grotesk"],
-            "headline-md": ["Hanken Grotesk"],
-            "headline-sm": ["Hanken Grotesk"],
-            "headline-lg": ["Hanken Grotesk"],
-            "display-lg": ["Hanken Grotesk"]
+            "label-md": ["Inter"],
+            "label-sm": ["Inter"],
+            "headline-md": ["Inter"],
+            "headline-sm": ["Inter"],
+            "headline-lg": ["Inter"],
+            "display-lg": ["Inter"]
           },
           "fontSize": {
             "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
@@ -268,6 +268,101 @@
     .material-symbols-outlined {
       font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
     }
+
+    /* ── Animations ── */
+    @keyframes slideInLeft {
+      from { transform: translateX(-30px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    @keyframes slideInRight {
+      from { transform: translateX(30px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    @keyframes slideInBottom {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes slideInTop {
+      from { transform: translateY(-30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes scaleIn {
+      from { transform: scale(0.95); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .animate-slide-in-left {
+      animation: slideInLeft 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      opacity: 0;
+    }
+
+    .animate-slide-in-right {
+      animation: slideInRight 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      opacity: 0;
+    }
+
+    .animate-slide-in-bottom {
+      animation: slideInBottom 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      opacity: 0;
+    }
+
+    .animate-slide-in-top {
+      animation: slideInTop 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      opacity: 0;
+    }
+
+    .animate-fade-in {
+      animation: fadeIn 0.8s ease forwards;
+    }
+
+    .animate-scale-in {
+      animation: scaleIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      opacity: 0;
+    }
+
+    /* Staggered delays */
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+    .delay-4 { animation-delay: 0.4s; }
+    .delay-5 { animation-delay: 0.5s; }
+    .delay-6 { animation-delay: 0.6s; }
+
+    /* Hover effects */
+    .hover-lift {
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+    }
+    .hover-lift:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-link-hover {
+      position: relative;
+    }
+    .nav-link-hover::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 12px;
+      right: 12px;
+      height: 2px;
+      background: var(--crm-primary);
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+    .nav-link-hover:hover::after {
+      transform: scaleX(1);
+    }
   </style>
   {% block extra_head %}{% endblock %}
 </head>
@@ -282,22 +377,22 @@
     </div>
 
     <div class="crm-side-nav__links">
-      <a class="crm-side-nav__link {% if request.path == '/' %}is-active{% endif %}" href="/">
+      <a class="crm-side-nav__link animate-slide-in-left delay-1 {% if request.path == '/' %}is-active{% endif %}" href="/">
         <span class="material-symbols-outlined crm-side-nav__link-icon" {% if request.path == '/' %}style="font-variation-settings: 'FILL' 1;"{% endif %}>home</span>
         <span class="crm-side-nav__link-copy">Home</span>
       </a>
 
-      <a class="crm-side-nav__link {% if request.path == '/client-directory' %}is-active{% endif %}" href="/client-directory">
+      <a class="crm-side-nav__link animate-slide-in-left delay-2 {% if request.path == '/client-directory' %}is-active{% endif %}" href="/client-directory">
         <span class="material-symbols-outlined crm-side-nav__link-icon" {% if request.path == '/client-directory' %}style="font-variation-settings: 'FILL' 1;"{% endif %}>group</span>
         <span class="crm-side-nav__link-copy">Clients</span>
       </a>
 
-      <a class="crm-side-nav__link {% if request.path == '/client-dashboard' %}is-active{% endif %}" href="/client-dashboard">
+      <a class="crm-side-nav__link animate-slide-in-left delay-3 {% if request.path == '/client-dashboard' %}is-active{% endif %}" href="/client-dashboard">
         <span class="material-symbols-outlined crm-side-nav__link-icon" {% if request.path == '/client-dashboard' %}style="font-variation-settings: 'FILL' 1;"{% endif %}>dashboard</span>
         <span class="crm-side-nav__link-copy">Client Dashboard</span>
       </a>
 
-      <a class="crm-side-nav__link {% if request.path == '/notifications' %}is-active{% endif %} flex justify-between items-center" href="/notifications">
+      <a class="crm-side-nav__link animate-slide-in-left delay-4 {% if request.path == '/notifications' %}is-active{% endif %} flex justify-between items-center" href="/notifications">
         <div class="flex items-center gap-3">
           <span class="material-symbols-outlined crm-side-nav__link-icon" {% if request.path == '/notifications' %}style="font-variation-settings: 'FILL' 1;"{% endif %}>notifications</span>
           <span class="crm-side-nav__link-copy">Notifications</span>
@@ -307,9 +402,9 @@
     </div>
 
     <div class="crm-side-nav__footer mt-auto">
-      <a class="crm-side-nav__link crm-side-nav__link--primary" href="#">
+      <a class="crm-side-nav__link animate-slide-in-left delay-5 crm-side-nav__link--primary" href="#">
         <span class="material-symbols-outlined crm-side-nav__link-icon">upload_file</span>
-        <span class="crm-side-nav__link-copy">Upload CSV</span>
+        <span class="crm-side-nav__link-copy">Upload Excel</span>
       </a>
 
       <a class="crm-side-nav__link crm-side-nav__link--secondary mt-2 border border-surface-variant flex items-center gap-3 px-3 py-2 rounded bg-white text-primary font-bold hover:bg-surface-container-high" href="#">
@@ -323,6 +418,98 @@
   <div class="crm-main-offset flex-1 flex flex-col min-h-screen overflow-hidden">
     {% block content %}{% endblock %}
   </div>
+
+  <!-- Register Company Modal -->
+  <div id="registerCompanyModal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+      <div class="fixed inset-0 transition-opacity bg-black bg-opacity-50" aria-hidden="true" onclick="closeRegisterModal()"></div>
+      <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+      <div class="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+        <div class="px-6 py-4 border-b border-surface-variant flex justify-between items-center">
+          <h3 class="text-headline-sm font-bold text-on-surface" id="modal-title">Register New Company</h3>
+          <button type="button" class="text-secondary hover:text-on-surface transition-colors" onclick="closeRegisterModal()">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+        <form id="registerCompanyForm" class="px-6 py-4 space-y-4">
+          <div>
+            <label for="companyName" class="block text-label-md font-semibold text-secondary mb-1 uppercase">Company Name</label>
+            <input type="text" id="companyName" name="companyName" class="w-full px-3 py-2 border border-surface-variant rounded bg-surface-container-low text-on-surface focus:outline-none focus:border-primary" placeholder="Enter company name" required>
+          </div>
+          <div>
+            <label for="industry" class="block text-label-md font-semibold text-secondary mb-1 uppercase">Industry</label>
+            <input type="text" id="industry" name="industry" class="w-full px-3 py-2 border border-surface-variant rounded bg-surface-container-low text-on-surface focus:outline-none focus:border-primary" placeholder="e.g. Manufacturing, Tech" required>
+          </div>
+          <div>
+            <label for="location" class="block text-label-md font-semibold text-secondary mb-1 uppercase">Location</label>
+            <input type="text" id="location" name="location" class="w-full px-3 py-2 border border-surface-variant rounded bg-surface-container-low text-on-surface focus:outline-none focus:border-primary" placeholder="City, Country" required>
+          </div>
+          <div>
+            <label for="pincode" class="block text-label-md font-semibold text-secondary mb-1 uppercase">Pincode</label>
+            <input type="text" id="pincode" name="pincode" class="w-full px-3 py-2 border border-surface-variant rounded bg-surface-container-low text-on-surface focus:outline-none focus:border-primary" placeholder="Enter Pincode" required>
+          </div>
+          <div>
+            <label for="salesAmount" class="block text-label-md font-semibold text-secondary mb-1 uppercase">Sales Amount</label>
+            <div class="relative">
+              <span class="absolute left-3 top-1/2 -translate-y-1/2 text-secondary">$</span>
+              <input type="number" id="salesAmount" name="salesAmount" class="w-full pl-7 pr-3 py-2 border border-surface-variant rounded bg-surface-container-low text-on-surface focus:outline-none focus:border-primary" placeholder="0.00" required>
+            </div>
+          </div>
+          <div>
+            <label for="riskScore" class="block text-label-md font-semibold text-secondary mb-1 uppercase">Risk Score</label>
+            <select id="riskScore" name="riskScore" class="w-full px-3 py-2 border border-surface-variant rounded bg-surface-container-low text-on-surface focus:outline-none focus:border-primary">
+              <option value="Low">Low</option>
+              <option value="Med">Medium</option>
+              <option value="High">High</option>
+            </select>
+          </div>
+          <div>
+            <label for="excelFile" class="block text-label-md font-semibold text-secondary mb-1 uppercase">Upload Excel File</label>
+            <input type="file" id="excelFile" name="excelFile" accept=".xlsx, .xls" class="w-full px-3 py-2 border border-surface-variant rounded bg-surface-container-low text-on-surface focus:outline-none focus:border-primary file:mr-4 file:py-1.5 file:px-3 file:rounded file:border-0 file:text-label-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 cursor-pointer">
+          </div>
+          <div class="pt-4 flex justify-end gap-3">
+            <button type="button" class="px-4 py-2 text-on-surface-variant font-semibold hover:bg-surface-container-high rounded transition-colors" onclick="closeRegisterModal()">Cancel</button>
+            <button type="submit" class="px-6 py-2 bg-primary text-on-primary font-semibold rounded shadow-sm hover:bg-surface-tint transition-colors">Register Company</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openRegisterModal() {
+      document.getElementById('registerCompanyModal').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeRegisterModal() {
+      document.getElementById('registerCompanyModal').classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Handle Register Company buttons
+      document.addEventListener('click', (e) => {
+        if (e.target.closest('#registerCompanyBtn')) {
+          openRegisterModal();
+        }
+      });
+
+      // Handle form submission
+      const form = document.getElementById('registerCompanyForm');
+      if (form) {
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          // In a real app, you'd send this data to the server
+          const formData = new FormData(form);
+          console.log('Registering Company:', Object.fromEntries(formData));
+          alert('Company registration submitted successfully!');
+          closeRegisterModal();
+          form.reset();
+        });
+      }
+    });
+  </script>
 
   {% block extra_scripts %}{% endblock %}
 </body>
