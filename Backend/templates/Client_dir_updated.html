@@ -1,0 +1,310 @@
+{% extends "base.html" %}
+
+{% block title %}Client Directory - CRM Pro{% endblock %}
+
+{% block extra_head %}
+<!-- No extra styles, using blueprint_styles.css -->
+{% endblock %}
+
+{% block content %}
+<!-- Header -->
+<header class="flex flex-col md:flex-row justify-between items-start md:items-center gap-md px-margin-desktop pt-8 pb-4 bg-transparent z-40 shrink-0">
+  <div class="flex items-center gap-xl flex-1">
+    <h1 class="text-on-surface">Clients</h1>
+    <!-- Search Bar -->
+    <div class="relative w-96 hidden md:block group">
+      <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-secondary group-focus-within:text-primary transition-colors">search</span>
+      <input id="searchInput" class="form-control" style="padding-left: 40px;" placeholder="Search by ID, Name, or Location" type="text">
+    </div>
+  </div>
+  <div class="flex items-center gap-sm">
+    <!-- Register Company Button -->
+    <button class="btn btn-primary" id="registerCompanyBtn">
+      <span class="material-symbols-outlined">add_business</span>
+      Register Company
+    </button>
+    <!-- Sort Sales -->
+    <div class="relative inline-block text-left">
+      <button class="btn btn-secondary" id="sortSalesBtn">
+        <span class="material-symbols-outlined">sort</span>
+        Sort Sales
+        <span class="material-symbols-outlined" style="font-size: 18px;">arrow_drop_down</span>
+      </button>
+      <div class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white border border-surface-variant z-50 animate-fade-scale" id="sortSalesDropdown" style="display: none; padding: 6px 0;">
+        <div aria-labelledby="options-menu" aria-orientation="vertical" role="menu">
+          <a id="sortSalesHighest" class="block px-4 py-2 text-sm text-on-surface hover:bg-surface-container hover:text-primary transition-colors" href="#" role="menuitem">Highest Sales</a>
+          <a id="sortSalesLowest" class="block px-4 py-2 text-sm text-on-surface hover:bg-surface-container hover:text-primary transition-colors" href="#" role="menuitem">Lowest Sales</a>
+        </div>
+      </div>
+    </div>
+    <!-- Sort Risk -->
+    <div class="relative inline-block text-left">
+      <button class="btn btn-secondary" id="sortRiskBtn">
+        <span class="material-symbols-outlined">filter_list</span>
+        Sort Risk
+        <span class="material-symbols-outlined" style="font-size: 18px;">arrow_drop_down</span>
+      </button>
+      <div class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white border border-surface-variant z-50 animate-fade-scale" id="sortRiskDropdown" style="display: none; padding: 6px 0;">
+        <div aria-labelledby="options-menu" aria-orientation="vertical" role="menu">
+          <a id="sortRiskHighest" class="block px-4 py-2 text-sm text-on-surface hover:bg-surface-container hover:text-primary transition-colors" href="#" role="menuitem">Highest Risk</a>
+          <a id="sortRiskLowest" class="block px-4 py-2 text-sm text-on-surface hover:bg-surface-container hover:text-primary transition-colors" href="#" role="menuitem">Lowest Risk</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto p-margin-desktop bg-background animate-fade-slide">
+  <div class="max-w-[1440px] mx-auto table-responsive">
+    <table class="ui-table">
+      <thead>
+        <tr>
+          <th>Company ID</th>
+          <th>Client Name</th>
+          <th>Industry</th>
+          <th>Location</th>
+          <th style="text-align: right;">Sales Amount</th>
+          <th style="text-align: center;">Risk Score</th>
+          <th style="text-align: center;">Actions</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody">
+        <!-- Row 1 -->
+        <tr>
+          <td><strong>CRM-001</strong></td>
+          <td><a class="text-primary font-bold hover:underline" href="/client-dashboard">Acme Corp</a></td>
+          <td>Manufacturing</td>
+          <td>Chicago, USA</td>
+          <td style="text-align: right; font-weight: 600;">$1,250,000</td>
+          <td style="text-align: center;"><span class="pill pill-success">Low</span></td>
+          <td style="text-align: center;">
+            <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.8125rem;">
+              <span class="material-symbols-outlined" style="font-size: 18px;">upload_file</span>
+            </button>
+          </td>
+        </tr>
+        <!-- Row 2 -->
+        <tr>
+          <td><strong>CRM-002</strong></td>
+          <td><a class="text-primary font-bold hover:underline" href="/client-dashboard">Global Logistics</a></td>
+          <td>Transportation</td>
+          <td>London, UK</td>
+          <td style="text-align: right; font-weight: 600;">$850,000</td>
+          <td style="text-align: center;"><span class="pill pill-warning">Med</span></td>
+          <td style="text-align: center;">
+            <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.8125rem;">
+              <span class="material-symbols-outlined" style="font-size: 18px;">upload_file</span>
+            </button>
+          </td>
+        </tr>
+        <!-- Row 3 -->
+        <tr>
+          <td><strong>CRM-003</strong></td>
+          <td><a class="text-primary font-bold hover:underline" href="/client-dashboard">Tech Solutions</a></td>
+          <td>Software</td>
+          <td>San Francisco, USA</td>
+          <td style="text-align: right; font-weight: 600;">$3,400,000</td>
+          <td style="text-align: center;"><span class="pill pill-success">Low</span></td>
+          <td style="text-align: center;">
+            <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.8125rem;">
+              <span class="material-symbols-outlined" style="font-size: 18px;">upload_file</span>
+            </button>
+          </td>
+        </tr>
+        <!-- Row 4 -->
+        <tr>
+          <td><strong>CRM-004</strong></td>
+          <td><a class="text-primary font-bold hover:underline" href="/client-dashboard">Starlight Retail</a></td>
+          <td>Retail</td>
+          <td>Toronto, Canada</td>
+          <td style="text-align: right; font-weight: 600;">$420,000</td>
+          <td style="text-align: center;"><span class="pill pill-danger">High</span></td>
+          <td style="text-align: center;">
+            <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.8125rem;">
+              <span class="material-symbols-outlined" style="font-size: 18px;">upload_file</span>
+            </button>
+          </td>
+        </tr>
+        <!-- Row 5 -->
+        <tr>
+          <td><strong>CRM-005</strong></td>
+          <td><a class="text-primary font-bold hover:underline" href="/client-dashboard">Pinnacle Health</a></td>
+          <td>Healthcare</td>
+          <td>Boston, USA</td>
+          <td style="text-align: right; font-weight: 600;">$1,800,000</td>
+          <td style="text-align: center;"><span class="pill pill-success">Low</span></td>
+          <td style="text-align: center;">
+            <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.8125rem;">
+              <span class="material-symbols-outlined" style="font-size: 18px;">upload_file</span>
+            </button>
+          </td>
+        </tr>
+        <!-- Row 6 -->
+        <tr>
+          <td><strong>CRM-006</strong></td>
+          <td><a class="text-primary font-bold hover:underline" href="/client-dashboard">Apex Financial</a></td>
+          <td>Finance</td>
+          <td>New York, USA</td>
+          <td style="text-align: right; font-weight: 600;">$5,100,000</td>
+          <td style="text-align: center;"><span class="pill pill-warning">Med</span></td>
+          <td style="text-align: center;">
+            <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.8125rem;">
+              <span class="material-symbols-outlined" style="font-size: 18px;">upload_file</span>
+            </button>
+          </td>
+        </tr>
+        <!-- Row 7 -->
+        <tr>
+          <td><strong>CRM-007</strong></td>
+          <td><a class="text-primary font-bold hover:underline" href="/client-dashboard">Nexus Energy</a></td>
+          <td>Energy</td>
+          <td>Houston, USA</td>
+          <td style="text-align: right; font-weight: 600;">$2,250,000</td>
+          <td style="text-align: center;"><span class="pill pill-success">Low</span></td>
+          <td style="text-align: center;">
+            <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.8125rem;">
+              <span class="material-symbols-outlined" style="font-size: 18px;">upload_file</span>
+            </button>
+          </td>
+        </tr>
+        <!-- Row 8 -->
+        <tr>
+          <td><strong>CRM-008</strong></td>
+          <td><a class="text-primary font-bold hover:underline" href="/client-dashboard">Horizon Media</a></td>
+          <td>Entertainment</td>
+          <td>Los Angeles, USA</td>
+          <td style="text-align: right; font-weight: 600;">$670,000</td>
+          <td style="text-align: center;"><span class="pill pill-danger">High</span></td>
+          <td style="text-align: center;">
+            <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.8125rem;">
+              <span class="material-symbols-outlined" style="font-size: 18px;">upload_file</span>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Pagination -->
+    <div style="background: var(--color-surface); padding: 16px 24px; border-top: 1px solid var(--color-border); display: flex; align-items: center; justify-content: space-between;">
+      <span id="entriesCount" style="font-size: 0.75rem; color: var(--color-text-secondary); font-weight: 600;">Showing 1 to 8 of 42 entries</span>
+      <div style="display: flex; gap: 8px;">
+        <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.8125rem;" id="prevBtn" disabled>Prev</button>
+        <button class="btn btn-primary" style="padding: 6px 12px; font-size: 0.8125rem;">1</button>
+        <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.8125rem;">2</button>
+        <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.8125rem;">3</button>
+        <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.8125rem;" id="nextBtn">Next</button>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  // Elements
+  const tableBody = document.getElementById('tableBody');
+  const searchInput = document.getElementById('searchInput');
+  const entriesCount = document.getElementById('entriesCount');
+
+  // Track total entries count
+  let totalEntriesVal = 42;
+
+  // Dropdown toggling
+  function toggleDropdown(btnId, dropdownId) {
+    const btn = document.getElementById(btnId);
+    const dd  = document.getElementById(dropdownId);
+    if (!btn || !dd) return;
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      const isOpen = dd.style.display === 'block';
+      document.querySelectorAll('div[id$="Dropdown"]').forEach(d => d.style.display = 'none');
+      dd.style.display = isOpen ? 'none' : 'block';
+    });
+  }
+
+  toggleDropdown('sortSalesBtn', 'sortSalesDropdown');
+  toggleDropdown('sortRiskBtn',  'sortRiskDropdown');
+
+  document.addEventListener('click', () => {
+    document.querySelectorAll('div[id$="Dropdown"]').forEach(d => d.style.display = 'none');
+  });
+
+  // Helper to update showing entries count
+  function updateEntriesCount() {
+    if (!entriesCount) return;
+    const currentRows = tableBody.querySelectorAll('tr').length;
+    entriesCount.textContent = `Showing 1 to ${currentRows} of ${totalEntriesVal} entries`;
+  }
+
+  // Interactive Live Search
+  if (searchInput) {
+    searchInput.addEventListener('input', function (e) {
+      const query = e.target.value.toLowerCase().trim();
+      const rows = tableBody.querySelectorAll('tr');
+      rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(query) ? '' : 'none';
+      });
+    });
+  }
+
+  // Interactive Sorting functions
+  function parseSales(row) {
+    const text = row.querySelector('td:nth-child(5)').textContent;
+    return parseFloat(text.replace(/[^0-9.-]+/g, "")) || 0;
+  }
+
+  // Map risk text to sorting order
+  function parseRisk(row) {
+    const text = row.querySelector('td:nth-child(6) span').textContent.trim();
+    const riskLevels = { 'Low': 1, 'Med': 2, 'High': 3 };
+    return riskLevels[text] || 0;
+  }
+
+  function sortRows(compareFn) {
+    const rows = Array.from(tableBody.querySelectorAll('tr'));
+    rows.sort(compareFn);
+    // Remove all rows
+    tableBody.innerHTML = '';
+    // Re-append sorted rows
+    rows.forEach(row => tableBody.appendChild(row));
+  }
+
+  const sortSalesHighest = document.getElementById('sortSalesHighest');
+  const sortSalesLowest = document.getElementById('sortSalesLowest');
+  const sortRiskHighest = document.getElementById('sortRiskHighest');
+  const sortRiskLowest = document.getElementById('sortRiskLowest');
+
+  if (sortSalesHighest) {
+    sortSalesHighest.addEventListener('click', (e) => {
+      e.preventDefault();
+      sortRows((a, b) => parseSales(b) - parseSales(a));
+    });
+  }
+
+  if (sortSalesLowest) {
+    sortSalesLowest.addEventListener('click', (e) => {
+      e.preventDefault();
+      sortRows((a, b) => parseSales(a) - parseSales(b));
+    });
+  }
+
+  if (sortRiskHighest) {
+    sortRiskHighest.addEventListener('click', (e) => {
+      e.preventDefault();
+      sortRows((a, b) => parseRisk(b) - parseRisk(a));
+    });
+  }
+
+  if (sortRiskLowest) {
+    sortRiskLowest.addEventListener('click', (e) => {
+      e.preventDefault();
+      sortRows((a, b) => parseRisk(a) - parseRisk(b));
+    });
+  }
+
+  // Initialize display counts
+  updateEntriesCount();
+</script>
+{% endblock %}

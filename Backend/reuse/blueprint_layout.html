@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blueprint Page | CRMpro</title>
+
+  <!-- 1. External Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+
+  <!-- 2. Blueprint CSS Base & Design Tokens -->
+  <link rel="stylesheet" href="./blueprint_styles.css">
+</head>
+<!-- 
+  TIP FOR DEVELOPERS:
+  - Add '.theme-admin' to the body tag below to switch to the Blue Admin Theme instantly!
+  - By default, it uses the Red User Theme.
+-->
+<body class="theme-user">
+
+  <!-- 3. Mobile Header (Only visible on screens <= 1024px) -->
+  <header class="mobile-header">
+    <div style="font-weight: 800; font-size: 1.25rem; color: var(--color-primary);">CRMpro</div>
+    <button class="hamburger-btn" id="mobile-hamburger" aria-expanded="false" aria-controls="app-sidebar" aria-label="Toggle Navigation Menu">
+      <span class="material-symbols-outlined">menu</span>
+    </button>
+  </header>
+
+  <div class="page-wrapper">
+    
+    <!-- 4. Sidebar Navigation (Slide-in on mobile, fixed on desktop) -->
+    <aside class="app-sidebar animate-slide-sidebar" id="app-sidebar">
+      
+      <!-- Sidebar Brand Logo -->
+      <div class="sidebar-logo">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span class="material-symbols-outlined" style="font-size: 36px; color: var(--color-primary);">rocket_launch</span>
+          <span style="font-weight: 800; font-size: 1.5rem; letter-spacing: -0.03em;">CRMpro</span>
+        </div>
+      </div>
+
+      <!-- Navigation Link List -->
+      <nav class="sidebar-menu">
+        <a href="#" class="menu-link active">
+          <span class="material-symbols-outlined">dashboard</span>
+          <span>Overview Dashboard</span>
+        </a>
+        <a href="#" class="menu-link">
+          <span class="material-symbols-outlined">list_alt</span>
+          <span>Generate Request</span>
+        </a>
+        <a href="#" class="menu-link">
+          <span class="material-symbols-outlined">route</span>
+          <span>Track Status</span>
+        </a>
+        <a href="#" class="menu-link">
+          <span class="material-symbols-outlined">analytics</span>
+          <span>Risk Analytics</span>
+        </a>
+        <a href="#" class="menu-link">
+          <span class="material-symbols-outlined">payments</span>
+          <span>Buy Credits</span>
+        </a>
+      </nav>
+
+      <!-- Sidebar Account Profile Footer -->
+      <div class="sidebar-footer">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--color-primary); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800;">JD</div>
+          <div>
+            <div style="font-weight: 700; font-size: 0.875rem;">John Doe</div>
+            <div style="font-size: 0.75rem; color: var(--color-text-secondary);">Enterprise User</div>
+          </div>
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- 5. Main Content Area -->
+    <main class="main-container">
+
+      <!-- Premium Notification Banner (Infinite Scrolling Marquee) -->
+      <div class="marquee-container" style="border-radius: 12px; margin-bottom: 24px; box-shadow: var(--shadow-sm);">
+        <div class="marquee-track">
+          <div class="marquee-item">
+            <span class="material-symbols-outlined">campaign</span> System Update: Credits purchases are processed instantly!
+          </div>
+          <div class="marquee-item">
+            <span class="material-symbols-outlined">verified</span> Security verification has been completed for the current session.
+          </div>
+          <!-- Repeat marquee items for smooth looping -->
+          <div class="marquee-item">
+            <span class="material-symbols-outlined">campaign</span> System Update: Credits purchases are processed instantly!
+          </div>
+          <div class="marquee-item">
+            <span class="material-symbols-outlined">verified</span> Security verification has been completed for the current session.
+          </div>
+        </div>
+      </div>
+
+      <!-- Page Hero Header (With fade slide-in transition) -->
+      <header class="animate-fade-slide" style="margin-bottom: 30px;">
+        <p style="text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.08em; font-weight: 700; color: var(--color-primary); margin-bottom: 6px;">Blueprint Template</p>
+        <h1 style="letter-spacing: -0.03em;">Interactive Workspace</h1>
+        <p style="margin-top: 6px; font-size: 1rem;">Use this webpage blueprint to bootstrap new panels, views, forms, or tables.</p>
+      </header>
+
+      <!-- Bento-style Grid (Bento cards showcasing metrics with hover effects) -->
+      <section class="bento-grid">
+        
+        <!-- Card 1: Standard Hover Lift Card with Accent strip -->
+        <div class="ui-card hover-lift accent-strip">
+          <div class="ui-card-title">Available Credits</div>
+          <div style="display: flex; align-items: baseline; justify-content: space-between;">
+            <div class="ui-card-value">124,500</div>
+            <span class="material-symbols-outlined" style="color: var(--color-primary); font-size: 28px;">toll</span>
+          </div>
+          <p style="font-size: 0.8125rem; margin-top: 10px;">Estimated coverage: 12 days</p>
+        </div>
+
+        <!-- Card 2: Skeleton Loader Preview card (Used while loading API data) -->
+        <div class="ui-card">
+          <div class="ui-card-title">Pending Approvals</div>
+          <div class="skeleton-shine" style="height: 36px; width: 60%; border-radius: 8px; margin: 8px 0;"></div>
+          <div class="skeleton-shine" style="height: 16px; width: 40%; border-radius: 6px;"></div>
+        </div>
+
+        <!-- Card 3: Floating / Pulsing Interactive Action Card -->
+        <div class="ui-card hover-lift" style="background: linear-gradient(135deg, var(--color-accent-light), #ffffff);">
+          <div class="ui-card-title">Quick Status</div>
+          <div style="display: flex; align-items: center; gap: 12px; margin: 8px 0;">
+            <span class="pill pill-success animate-pulse-scale">System Active</span>
+          </div>
+          <p style="font-size: 0.8125rem;">Server latency is excellent (<span data-tooltip="API response time measured dynamically">14ms</span>)</p>
+        </div>
+
+      </section>
+
+      <!-- Split Layout (Forms and Tabular Data Panel) -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 30px; margin-bottom: 40px;">
+        
+        <!-- Left Column: Actions & Form Box -->
+        <div class="ui-card animate-fade-slide">
+          <h2 style="margin-bottom: 20px; font-size: 1.25rem;">Quick Transaction</h2>
+          
+          <form onsubmit="event.preventDefault(); alert('Form submitted!');">
+            
+            <div class="form-group">
+              <label class="form-label" for="txt-entity">Entity Name</label>
+              <input type="text" id="txt-entity" class="form-control" placeholder="e.g. Acme Corp Inc." required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="sel-priority">Verification Priority</label>
+              <select id="sel-priority" class="form-control">
+                <option value="low">Low Priority (Standard)</option>
+                <option value="medium">Medium Priority</option>
+                <option value="high">High Priority (Urgent)</option>
+              </select>
+            </div>
+
+            <div style="display: flex; gap: 12px; margin-top: 24px;">
+              <button type="submit" class="btn btn-primary">
+                <span class="material-symbols-outlined">send</span> Submit Form
+              </button>
+              <!-- Triggering the modal overlay -->
+              <button type="button" class="btn btn-secondary" data-modal-open="blueprint-modal">
+                <span class="material-symbols-outlined">open_in_new</span> Open Modal
+              </button>
+            </div>
+
+          </form>
+
+        </div>
+
+        <!-- Right Column: Interactive Tabs and Table View -->
+        <div class="ui-card animate-fade-slide" style="flex-grow: 2;">
+          
+          <!-- Tabs Controllers -->
+          <div style="display: flex; gap: 16px; border-bottom: 1px solid var(--color-border); padding-bottom: 12px; margin-bottom: 16px;" data-tabs>
+            <button class="btn btn-secondary active" data-tab-target="#tab-recent" style="padding: 6px 16px; font-size: 0.875rem;">Recent Logs</button>
+            <button class="btn btn-secondary" data-tab-target="#tab-statistics" style="padding: 6px 16px; font-size: 0.875rem;">Analytics Overview</button>
+          </div>
+
+          <!-- Tab Panel 1: Recent Logs Table (default) -->
+          <div id="tab-recent" data-tab-content>
+            <div class="table-responsive">
+              <table class="ui-table">
+                <thead>
+                  <tr>
+                    <th>Reference</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>#REF-9283</strong></td>
+                    <td>2026-06-10</td>
+                    <td><span class="pill pill-success">Processed</span></td>
+                    <td><a href="#" data-tooltip="Download verification report PDF">View Report</a></td>
+                  </tr>
+                  <tr>
+                    <td><strong>#REF-9284</strong></td>
+                    <td>2026-06-09</td>
+                    <td><span class="pill pill-warning">Reviewing</span></td>
+                    <td><a href="#" data-tooltip="Submit additional documents">Upload Info</a></td>
+                  </tr>
+                  <tr>
+                    <td><strong>#REF-9285</strong></td>
+                    <td>2026-06-08</td>
+                    <td><span class="pill pill-danger">Declined</span></td>
+                    <td><a href="#" data-tooltip="Check reason of decline">Check logs</a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Tab Panel 2: Statistics (hidden initially) -->
+          <div id="tab-statistics" data-tab-content style="display: none;">
+            <div style="padding: 20px; border-radius: 12px; background: var(--color-surface-variant); text-align: center;">
+              <span class="material-symbols-outlined animate-rotate" style="font-size: 48px; color: var(--color-primary); margin-bottom: 12px;">hourglass_empty</span>
+              <h3>Computing Real-time Analytics</h3>
+              <p style="font-size: 0.875rem; margin-top: 6px;">Charts and performance ratios will display once compilation is complete.</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </main>
+
+  </div>
+
+  <!-- 6. Modal Overlay Component (Hidden by default, triggered via data-modal-open) -->
+  <div class="modal-backdrop" id="blueprint-modal" aria-hidden="true" role="dialog">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2 style="font-size: 1.25rem; display: flex; align-items: center; gap: 8px;">
+          <span class="material-symbols-outlined" style="color: var(--color-primary);">info</span> Modal Dialog Blueprint
+        </h2>
+        <button class="modal-close" data-modal-close aria-label="Close Dialog">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p style="margin-bottom: 14px;">This modal window uses premium blur backdrop-filter styling, fluid scale adjustments, and supports accessibility triggers (esc key closing, target modal attributes).</p>
+        <p>You can drop forms, summaries, tables, or interactive visualizers directly inside this body container.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-modal-close>Cancel</button>
+        <button type="button" class="btn btn-primary" onclick="alert('Confirmed!'); document.getElementById('blueprint-modal').classList.remove('show');">Confirm Action</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. Javascript Component Controllers -->
+  <script src="./blueprint_scripts.js"></script>
+</body>
+</html>

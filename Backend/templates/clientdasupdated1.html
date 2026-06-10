@@ -1,0 +1,394 @@
+{% extends "base.html" %}
+
+{% block title %}Acme Corp Profile - CRM Pro{% endblock %}
+
+{% block extra_head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block content %}
+<main class="flex-1 overflow-y-auto p-margin-desktop bg-background animate-fade-slide">
+  <div class="max-w-[1440px] w-full mx-auto pb-12">
+    <div class="mb-xl">
+      <h1 class="text-on-surface">Acme Corp Profile</h1>
+      <p class="text-secondary mt-1">Detailed overview of target accounts, revenue metrics, and risk assessment.</p>
+    </div>
+
+    <!-- Actions & Filtering Panel styled like a bento card/control area -->
+    <div class="ui-card flex flex-col md:flex-row items-center justify-between gap-md mb-lg">
+      <div class="flex-1 w-full">
+        <label class="form-label">Search</label>
+        <div style="position: relative; display: flex; align-items: center; width: 100%;">
+          <span class="material-symbols-outlined absolute left-3 text-secondary">search</span>
+          <input class="form-control" style="padding-left: 40px;" placeholder="Search by ID, Name, or Location..." type="text">
+        </div>
+      </div>
+      <div class="flex flex-wrap gap-2 w-full md:w-auto justify-end">
+        <div class="relative group">
+          <button class="btn btn-secondary">
+            <span class="material-symbols-outlined">sort</span> Sort Sales
+            <span class="material-symbols-outlined" style="font-size: 18px;">expand_more</span>
+          </button>
+          <div class="absolute top-full left-0 mt-1 w-40 bg-white border border-surface-variant rounded shadow-xl hidden group-hover:block z-50 animate-fade-scale">
+            <a class="block px-4 py-2 text-sm hover:bg-surface-container transition-colors" href="#">Highest Sales</a>
+            <a class="block px-4 py-2 text-sm hover:bg-surface-container transition-colors" href="#">Lowest Sales</a>
+          </div>
+        </div>
+        <div class="relative group">
+          <button class="btn btn-secondary">
+            <span class="material-symbols-outlined">warning</span> Sort Risk
+            <span class="material-symbols-outlined" style="font-size: 18px;">expand_more</span>
+          </button>
+          <div class="absolute top-full left-0 mt-1 w-40 bg-white border border-surface-variant rounded shadow-xl hidden group-hover:block z-50 animate-fade-scale">
+            <a class="block px-4 py-2 text-sm hover:bg-surface-container transition-colors" href="#">Highest Risk</a>
+            <a class="block px-4 py-2 text-sm hover:bg-surface-container transition-colors" href="#">Lowest Risk</a>
+          </div>
+        </div>
+        <button class="btn btn-primary">
+          <span class="material-symbols-outlined">payments</span> Highest Pending
+        </button>
+      </div>
+    </div>
+
+    <!-- Targets Table -->
+    <div class="table-responsive mb-12">
+      <table class="ui-table">
+        <thead>
+          <tr>
+            <th>Target ID</th>
+            <th>Target Company Name</th>
+            <th>Industry</th>
+            <th>Location</th>
+            <th>Sales Obtained</th>
+            <th style="text-align: right;">Pending Credit</th>
+            <th style="text-align: center;">Risk Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>#TGT-1042</td>
+            <td><a class="text-primary font-bold hover:underline" href="/client-dashboard">Global Tech Solutions</a></td>
+            <td>Software</td>
+            <td>
+              <div style="display: inline-flex; align-items: center; gap: 4px;">
+                <span class="material-symbols-outlined" style="font-size: 18px; color: var(--color-text-secondary);">location_on</span> San Francisco, CA
+              </div>
+            </td>
+            <td>$1,245,000</td>
+            <td style="text-align: right; font-weight: 600;">$45,000</td>
+            <td style="text-align: center;">
+              <span class="pill pill-success">12</span>
+            </td>
+          </tr>
+          <tr>
+            <td>#TGT-1089</td>
+            <td><a class="text-primary font-bold hover:underline" href="/client-dashboard">Apex Manufacturing</a></td>
+            <td>Industrial</td>
+            <td>
+              <div style="display: inline-flex; align-items: center; gap: 4px;">
+                <span class="material-symbols-outlined" style="font-size: 18px; color: var(--color-text-secondary);">location_on</span> Detroit, MI
+              </div>
+            </td>
+            <td>$890,500</td>
+            <td style="text-align: right; font-weight: 600; color: var(--color-primary);">$320,000</td>
+            <td style="text-align: center;">
+              <span class="pill pill-danger">85</span>
+            </td>
+          </tr>
+          <tr>
+            <td>#TGT-1102</td>
+            <td><a class="text-primary font-bold hover:underline" href="/client-dashboard">Nexus Energy</a></td>
+            <td>Energy</td>
+            <td>
+              <div style="display: inline-flex; align-items: center; gap: 4px;">
+                <span class="material-symbols-outlined" style="font-size: 18px; color: var(--color-text-secondary);">location_on</span> Houston, TX
+              </div>
+            </td>
+            <td>$1,500,000</td>
+            <td style="text-align: right; font-weight: 600;">$25,000</td>
+            <td style="text-align: center;">
+              <span class="pill pill-success">18</span>
+            </td>
+          </tr>
+          <tr>
+            <td>#TGT-1145</td>
+            <td><a class="text-primary font-bold hover:underline" href="/client-dashboard">Horizon Media</a></td>
+            <td>Entertainment</td>
+            <td>
+              <div style="display: inline-flex; align-items: center; gap: 4px;">
+                <span class="material-symbols-outlined" style="font-size: 18px; color: var(--color-text-secondary);">location_on</span> Los Angeles, CA
+              </div>
+            </td>
+            <td>$780,000</td>
+            <td style="text-align: right; font-weight: 600;">$60,000</td>
+            <td style="text-align: center;">
+              <span class="pill pill-warning">35</span>
+            </td>
+          </tr>
+          <tr>
+            <td>#TGT-1188</td>
+            <td><a class="text-primary font-bold hover:underline" href="/client-dashboard">Stark Industries</a></td>
+            <td>Defense</td>
+            <td>
+              <div style="display: inline-flex; align-items: center; gap: 4px;">
+                <span class="material-symbols-outlined" style="font-size: 18px; color: var(--color-text-secondary);">location_on</span> New York, NY
+              </div>
+            </td>
+            <td>$4,200,000</td>
+            <td style="text-align: right; font-weight: 600;">$0</td>
+            <td style="text-align: center;">
+              <span class="pill pill-success">05</span>
+            </td>
+          </tr>
+          <tr>
+            <td>#TGT-1201</td>
+            <td><a class="text-primary font-bold hover:underline" href="/client-dashboard">Wayne Enterprises</a></td>
+            <td>Diverse</td>
+            <td>
+              <div style="display: inline-flex; align-items: center; gap: 4px;">
+                <span class="material-symbols-outlined" style="font-size: 18px; color: var(--color-text-secondary);">location_on</span> Gotham City
+              </div>
+            </td>
+            <td>$3,800,000</td>
+            <td style="text-align: right; font-weight: 600; color: var(--color-primary);">$150,000</td>
+            <td style="text-align: center;">
+              <span class="pill pill-warning">42</span>
+            </td>
+          </tr>
+          <tr>
+            <td>#TGT-1244</td>
+            <td><a class="text-primary font-bold hover:underline" href="/client-dashboard">Initech</a></td>
+            <td>Tech</td>
+            <td>
+              <div style="display: inline-flex; align-items: center; gap: 4px;">
+                <span class="material-symbols-outlined" style="font-size: 18px; color: var(--color-text-secondary);">location_on</span> Austin, TX
+              </div>
+            </td>
+            <td>$600,000</td>
+            <td style="text-align: right; font-weight: 600;">$80,000</td>
+            <td style="text-align: center;">
+              <span class="pill pill-success">22</span>
+            </td>
+          </tr>
+          <tr>
+            <td>#TGT-1287</td>
+            <td><a class="text-primary font-bold hover:underline" href="/client-dashboard">Omni Consumer Products</a></td>
+            <td>Robotics</td>
+            <td>
+              <div style="display: inline-flex; align-items: center; gap: 4px;">
+                <span class="material-symbols-outlined" style="font-size: 18px; color: var(--color-text-secondary);">location_on</span> Detroit, MI
+              </div>
+            </td>
+            <td>$2,100,000</td>
+            <td style="text-align: right; font-weight: 600; color: var(--color-primary);">$400,000</td>
+            <td style="text-align: center;">
+              <span class="pill pill-danger">High</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="background: var(--color-surface-variant); padding: 16px 24px; border-top: 1px solid var(--color-border); display: flex; align-items: center; justify-content: space-between;">
+        <span style="font-size: 0.75rem; color: var(--color-text-secondary); font-weight: 600;">Showing 1 to 8 of 24 entries</span>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 0.75rem; color: var(--color-text-secondary); font-weight: 600;">Page 1 of 5</span>
+          <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.8125rem;">
+            <span class="material-symbols-outlined" style="font-size: 18px;">chevron_right</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Data Visualization Section -->
+    <div>
+      <h2 class="font-headline-sm text-headline-sm mb-4">Sales Analytics</h2>
+      <div id="chartContainer" class="grid grid-cols-1 md:grid-cols-2 gap-md mb-6 transition-opacity duration-300">
+        <!-- Pie Chart Card -->
+        <div class="ui-card hover-lift">
+          <div class="ui-card-title">Sales Distribution</div>
+          <div class="relative h-64 w-full flex items-center justify-center">
+            <canvas id="pieChart"></canvas>
+          </div>
+        </div>
+        <!-- Line Chart Card -->
+        <div class="ui-card hover-lift">
+          <div class="ui-card-title">Sales Trends</div>
+          <div class="relative h-64 w-full">
+            <canvas id="lineChart"></canvas>
+          </div>
+        </div>
+      </div>
+      <!-- Filter Controls -->
+      <div class="flex justify-center gap-4">
+        <button class="btn btn-primary" id="btnYearly">
+          Yearly
+        </button>
+        <button class="btn btn-secondary" id="btn5Yearly">
+          5 Yearly
+        </button>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  // Chart Data Configurations
+  const dataYearly = {
+    line: {
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+      datasets: [{
+        label: 'Revenue ($)',
+        data: [120000, 150000, 180000, 140000, 200000, 250000, 220000, 280000, 310000, 290000, 350000, 400000],
+        borderColor: '#ba0013',
+        backgroundColor: 'rgba(186, 0, 19, 0.1)',
+        borderWidth: 2,
+        fill: true,
+        tension: 0.4,
+        pointBackgroundColor: '#ba0013'
+      }]
+    },
+    pie: {
+      labels: ['North America', 'Europe', 'Asia', 'South America', 'Other'],
+      datasets: [{
+        data: [45, 25, 15, 10, 5],
+        backgroundColor: ['#ba0013', '#e31e24', '#ffb4ab', '#4d5c72', '#e0e3e5'],
+        borderWidth: 1,
+        borderColor: '#ffffff'
+      }]
+    }
+  };
+
+  const data5Yearly = {
+    line: {
+      labels: ['2019', '2020', '2021', '2022', '2023'],
+      datasets: [{
+        label: 'Revenue ($)',
+        data: [1200000, 1500000, 1850000, 2400000, 3100000],
+        borderColor: '#e31e24',
+        backgroundColor: 'rgba(227, 30, 36, 0.1)',
+        borderWidth: 2,
+        fill: true,
+        tension: 0.4,
+        pointBackgroundColor: '#e31e24'
+      }]
+    },
+    pie: {
+      labels: ['North America', 'Europe', 'Asia', 'South America', 'Other'],
+      datasets: [{
+        data: [50, 20, 18, 7, 5],
+        backgroundColor: ['#ba0013', '#e31e24', '#ffb4ab', '#4d5c72', '#e0e3e5'],
+        borderWidth: 1,
+        borderColor: '#ffffff'
+      }]
+    }
+  };
+
+  // Initialize Charts
+  const pieCtx = document.getElementById('pieChart').getContext('2d');
+  const lineCtx = document.getElementById('lineChart').getContext('2d');
+
+  let pieChart = new Chart(pieCtx, {
+    type: 'doughnut',
+    data: dataYearly.pie,
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'right',
+          labels: {
+            font: { family: "'Inter', sans-serif" },
+            color: '#64748b'
+          }
+        }
+      },
+      cutout: '65%'
+    }
+  });
+
+  let lineChart = new Chart(lineCtx, {
+    type: 'line',
+    data: dataYearly.line,
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          display: false
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          grid: {
+            color: '#eceef0'
+          },
+          ticks: {
+            font: { family: "'Inter', sans-serif" },
+            color: '#64748b',
+            callback: function(value) {
+              return '$' + (value/1000) + 'k';
+            }
+          }
+        },
+        x: {
+          grid: {
+            display: false
+          },
+          ticks: {
+            font: { family: "'Inter', sans-serif" },
+            color: '#64748b'
+          }
+        }
+      }
+    }
+  });
+
+  // Interactivity
+  const btnYearly = document.getElementById('btnYearly');
+  const btn5Yearly = document.getElementById('btn5Yearly');
+  const chartContainer = document.getElementById('chartContainer');
+
+  function updateActiveButton(activeBtn, inactiveBtn) {
+    activeBtn.classList.remove('btn-secondary');
+    activeBtn.classList.add('btn-primary');
+    
+    inactiveBtn.classList.remove('btn-primary');
+    inactiveBtn.classList.add('btn-secondary');
+  }
+
+  function triggerChartAnimation() {
+    chartContainer.classList.add('opacity-0');
+    setTimeout(() => {
+      chartContainer.classList.remove('opacity-0');
+      chartContainer.classList.add('animate-fade-scale');
+      setTimeout(() => chartContainer.classList.remove('animate-fade-scale'), 500);
+    }, 300);
+  }
+
+  btnYearly.addEventListener('click', () => {
+    if (btnYearly.classList.contains('btn-primary')) return;
+    triggerChartAnimation();
+    setTimeout(() => {
+      pieChart.data = dataYearly.pie;
+      lineChart.data = dataYearly.line;
+      pieChart.update();
+      lineChart.update();
+      updateActiveButton(btnYearly, btn5Yearly);
+    }, 300);
+  });
+
+  btn5Yearly.addEventListener('click', () => {
+    if (btn5Yearly.classList.contains('btn-primary')) return;
+    triggerChartAnimation();
+    setTimeout(() => {
+      pieChart.data = data5Yearly.pie;
+      lineChart.data = data5Yearly.line;
+      pieChart.update();
+      lineChart.update();
+      updateActiveButton(btn5Yearly, btnYearly);
+    }, 300);
+  });
+</script>
+{% endblock %}

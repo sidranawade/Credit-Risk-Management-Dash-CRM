@@ -1,0 +1,260 @@
+{% extends "base.html" %}
+
+{% block title %}CRM Pro - Credit Risk Dashboard{% endblock %}
+
+{% block extra_head %}
+<style>
+    #toast {
+      visibility: hidden;
+      min-width: 300px;
+      background-color: var(--color-surface);
+      border: 1px solid var(--color-border);
+      color: var(--color-text-primary);
+      text-align: left;
+      border-radius: 12px;
+      padding: 16px;
+      position: fixed;
+      z-index: 1000;
+      right: 30px;
+      bottom: 30px;
+      font-size: 14px;
+      box-shadow: var(--shadow-xl);
+      transform: translateY(150%) scale(0.95);
+      transition: transform var(--transition-elastic), opacity var(--transition-normal), visibility var(--transition-normal);
+      opacity: 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    #toast.show {
+      visibility: visible;
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+<!-- Top Marquee Banner -->
+<div class="marquee-container" style="border-radius: 0; margin-bottom: 0; box-shadow: var(--shadow-sm); z-index: 30; position: sticky; top: 0;">
+  <div class="marquee-track">
+    <div class="marquee-item">
+      <span class="material-symbols-outlined">campaign</span> LIVE UPDATE: Acme Corp sales amount of $1,250,000 recorded.
+    </div>
+    <div class="marquee-item">
+      <span class="material-symbols-outlined">error</span> ALERT: Client B risk score increased.
+    </div>
+    <div class="marquee-item">
+      <span class="material-symbols-outlined">notifications_active</span> UPDATE: Global Logistics contract renewed.
+    </div>
+    <!-- Repeat for seamless looping -->
+    <div class="marquee-item">
+      <span class="material-symbols-outlined">campaign</span> LIVE UPDATE: Acme Corp sales amount of $1,250,000 recorded.
+    </div>
+    <div class="marquee-item">
+      <span class="material-symbols-outlined">error</span> ALERT: Client B risk score increased.
+    </div>
+    <div class="marquee-item">
+      <span class="material-symbols-outlined">notifications_active</span> UPDATE: Global Logistics contract renewed.
+    </div>
+  </div>
+</div>
+
+<!-- Dashboard Canvas -->
+<main class="flex-1 p-margin-page grid grid-cols-1 gap-6 max-w-6xl mx-auto w-full overflow-y-auto animate-fade-slide">
+  <!-- Page Header -->
+  <div class="col-span-1 mb-2 relative flex flex-col md:flex-row md:items-center md:justify-between">
+    <h1 class="text-on-surface">Dashboard Overview</h1>
+    <div class="mt-4 md:mt-0 md:absolute md:right-0 md:top-0">
+      <button class="btn btn-primary" id="registerCompanyBtn">
+        <span class="material-symbols-outlined">add_business</span>
+        Register Company
+      </button>
+    </div>
+  </div>
+
+  <!-- Top Search Block -->
+  <section class="ui-card hover-lift accent-strip">
+    <div class="flex flex-col md:flex-row gap-4 items-end">
+      <div class="flex-grow space-y-1">
+        <label class="form-label">Company ID</label>
+        <input class="form-control" placeholder="e.g. CRM-001" type="text">
+      </div>
+      <div class="flex-grow space-y-1">
+        <label class="form-label">Company Name</label>
+        <input class="form-control" placeholder="Search name..." type="text">
+      </div>
+      <div class="flex-grow space-y-1">
+        <label class="form-label">Location</label>
+        <input class="form-control" placeholder="City or Region" type="text">
+      </div>
+      <button class="btn btn-primary" style="height: 48px; padding: 0 28px;">
+        <span class="material-symbols-outlined">search</span>
+        Search
+      </button>
+    </div>
+  </section>
+
+  <!-- Top Grossing Clients -->
+  <section class="ui-card hover-lift">
+    <header class="flex justify-between items-center pb-5 border-b border-surface-variant mb-5">
+      <h3 style="font-size: 1.25rem;" class="text-on-surface">Top Grossing Clients</h3>
+      <button aria-label="More options" style="background: transparent; border: none; cursor: pointer; color: var(--color-text-secondary); display: flex;" class="hover:text-primary">
+        <span class="material-symbols-outlined">more_horiz</span>
+      </button>
+    </header>
+    <div class="table-responsive">
+      <table class="ui-table">
+        <thead>
+          <tr>
+            <th>Company ID</th>
+            <th>Client</th>
+            <th>Industry</th>
+            <th>Location</th>
+            <th style="text-align: right;">Sales Amount (YTD)</th>
+            <th style="text-align: right;">Risk Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>CRM-001</strong></td>
+            <td><a class="text-primary font-bold hover:underline" href="/client-dashboard">Acme Corp</a></td>
+            <td>Manufacturing</td>
+            <td>San Francisco, USA</td>
+            <td style="text-align: right; font-weight: 600;">$1,250,000</td>
+            <td style="text-align: right;">
+              <span class="pill pill-success">Low</span>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>CRM-002</strong></td>
+            <td><a class="text-primary font-bold hover:underline" href="/client-dashboard">Global Logistics</a></td>
+            <td>Transport</td>
+            <td>Singapore</td>
+            <td style="text-align: right; font-weight: 600;">$980,500</td>
+            <td style="text-align: right;">
+              <span class="pill pill-warning">Med</span>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>CRM-003</strong></td>
+            <td><a class="text-primary font-bold hover:underline" href="/client-dashboard">Nexus Tech</a></td>
+            <td>Software</td>
+            <td>Berlin, Germany</td>
+            <td style="text-align: right; font-weight: 600;">$750,000</td>
+            <td style="text-align: right;">
+              <span class="pill pill-success">Low (18)</span>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>CRM-004</strong></td>
+            <td><a class="text-primary font-bold hover:underline" href="/client-dashboard">Initech</a></td>
+            <td>Tech</td>
+            <td>Austin, USA</td>
+            <td style="text-align: right; font-weight: 600;">$620,000</td>
+            <td style="text-align: right;">
+              <span class="pill pill-success">Low</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Risk Watchlist -->
+  <section class="ui-card hover-lift">
+    <header class="flex justify-between items-center pb-5 border-b border-surface-variant mb-5">
+      <h3 style="font-size: 1.25rem;" class="text-on-surface flex items-center gap-2">
+        <span class="material-symbols-outlined text-primary">trending_down</span>
+        Risk Watchlist
+      </h3>
+    </header>
+    <div class="space-y-3">
+      <!-- Risk Items -->
+      <article class="p-4 border border-outline-variant rounded bg-error-container/10 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-error-container/20 transition-all duration-300 hover-lift">
+        <div>
+          <div class="flex items-center gap-3 mb-1">
+            <h4 class="font-body-md text-body-md font-bold text-on-surface"><a class="text-primary font-bold hover:underline" href="/client-dashboard">Client B (Retail)</a> <span class="text-secondary font-normal">[CRM-005]</span></h4>
+            <span class="pill pill-danger">High Risk</span>
+          </div>
+          <p class="font-label-caps text-label-caps text-secondary">Chicago, USA • Monthly Sales Trend</p>
+        </div>
+        <div class="flex items-center gap-3 bg-surface-container-lowest px-3 py-1.5 rounded border border-surface-variant">
+          <span class="font-data-tabular text-data-tabular text-secondary line-through">$10k</span>
+          <span class="material-symbols-outlined text-primary text-[16px]">arrow_forward</span>
+          <span class="font-data-tabular text-data-tabular font-bold text-primary">$3k</span>
+        </div>
+      </article>
+      
+      <article class="p-4 border border-surface-variant rounded bg-surface-container-lowest flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-primary/5 transition-all duration-300 hover-lift">
+        <div>
+          <div class="flex items-center gap-3 mb-1">
+            <h4 class="font-body-md text-body-md font-medium text-on-surface"><a class="text-primary font-bold hover:underline" href="/client-dashboard">Omega Build</a> <span class="text-secondary font-normal">[CRM-006]</span></h4>
+            <span class="pill pill-warning">Monitor</span>
+          </div>
+          <p class="font-label-caps text-label-caps text-secondary">London, UK • Monthly Sales Trend</p>
+        </div>
+        <div class="flex items-center gap-3 bg-surface-container-lowest px-3 py-1.5 rounded border border-surface-variant">
+          <span class="font-data-tabular text-data-tabular text-secondary">$25k</span>
+          <span class="material-symbols-outlined text-secondary text-[16px]">arrow_forward</span>
+          <span class="font-data-tabular text-data-tabular text-on-surface">$20k</span>
+        </div>
+      </article>
+
+      <article class="p-4 border border-surface-variant rounded bg-surface-container-lowest flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-primary/5 transition-all duration-300 hover-lift">
+        <div>
+          <div class="flex items-center gap-3 mb-1">
+            <h4 class="font-body-md text-body-md font-medium text-on-surface"><a class="text-primary font-bold hover:underline" href="/client-dashboard">Stark Ind.</a> <span class="text-secondary font-normal">[CRM-007]</span></h4>
+            <span class="pill pill-warning">Monitor</span>
+          </div>
+          <p class="font-label-caps text-label-caps text-secondary">New York, USA • Monthly Sales Trend</p>
+        </div>
+        <div class="flex items-center gap-3 bg-surface-container-lowest px-3 py-1.5 rounded border border-surface-variant">
+          <span class="font-data-tabular text-data-tabular text-secondary">$50k</span>
+          <span class="material-symbols-outlined text-secondary text-[16px]">arrow_forward</span>
+          <span class="font-data-tabular text-data-tabular text-on-surface">$48k</span>
+        </div>
+      </article>
+
+      <article class="p-4 border border-outline-variant rounded bg-error-container/10 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-error-container/20 transition-all duration-300 hover-lift">
+        <div>
+          <div class="flex items-center gap-3 mb-1">
+            <h4 class="font-body-md text-body-md font-bold text-on-surface"><a class="text-primary font-bold hover:underline" href="/client-dashboard">Wayne Ent.</a> <span class="text-secondary font-normal">[CRM-008]</span></h4>
+            <span class="pill pill-danger">High Risk</span>
+          </div>
+          <p class="font-label-caps text-label-caps text-secondary">Gotham City • Monthly Sales Trend</p>
+        </div>
+        <div class="flex items-center gap-3 bg-surface-container-lowest px-3 py-1.5 rounded border border-surface-variant">
+          <span class="font-data-tabular text-data-tabular text-secondary line-through">$80k</span>
+          <span class="material-symbols-outlined text-primary text-[16px]">arrow_forward</span>
+          <span class="font-data-tabular text-data-tabular font-bold text-primary">$40k</span>
+        </div>
+      </article>
+    </div>
+  </section>
+</main>
+
+<!-- Toast Notification -->
+<div id="toast" data-purpose="toast-notification">
+  <span class="material-symbols-outlined text-primary" style="font-size: 28px;">error</span>
+  <div>
+    <p style="font-weight: 700; font-size: 14px; margin-bottom: 2px;">New Alert</p>
+    <p style="font-size: 12px; color: var(--color-text-secondary);">Client B risk score increased.</p>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    function showToast() {
+      var toastElement = document.getElementById("toast");
+      if (toastElement) {
+        toastElement.classList.add("show");
+        setTimeout(function(){ toastElement.classList.remove("show"); }, 4000);
+      }
+    }
+    // Simulate new alert after 3 seconds
+    setTimeout(showToast, 3000);
+  </script>
+{% endblock %}
